@@ -1,0 +1,49 @@
+{
+  "name": "TarfíaDB",
+  "short_name": "TarfíaDB",
+  "description": "Base de datos de socios y familias",
+  "start_url": "./home.php",
+  "scope": "./",
+  "id": "tarfiadb-app",
+  "display": "standalone",
+  "display_override": ["standalone", "minimal-ui"],
+  "background_color": "#1a2744",
+  "theme_color": "#1a2744",
+  "orientation": "any",
+  "lang": "es",
+  "dir": "ltr",
+  "icons": [
+    {
+      "src": "./assets/img/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./assets/img/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "./assets/img/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./assets/img/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "./assets/img/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ],
+  "categories": ["business", "productivity"],
+  "prefer_related_applications": false
+}

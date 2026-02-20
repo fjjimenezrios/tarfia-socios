@@ -1,0 +1,1365 @@
+/* Tarfia Socios — diseño moderno con identidad de marca */
+:root {
+  --tarfia-bg: #f1f5f9;
+  --tarfia-surface: #ffffff;
+  --tarfia-surface-hover: #f8fafc;
+  --tarfia-accent: #f7b32b;
+  --tarfia-accent-hover: #e5a220;
+  --tarfia-accent-light: #fef9e7;
+  --tarfia-link: #0369a1;
+  --tarfia-link-hover: #0284c7;
+  --tarfia-text: #1a2744;
+  --tarfia-muted: #64748b;
+  --tarfia-border: #e2e8f0;
+  --tarfia-nav: #1a2744;
+  --tarfia-nav-text: #e2e8f0;
+  --tarfia-gold: #f7b32b;
+  --tarfia-success: #059669;
+  --tarfia-danger: #dc2626;
+  --tarfia-info: #0284c7;
+  --tarfia-warning: #d97706;
+  --tarfia-radius: 1rem;
+  --tarfia-radius-sm: 0.5rem;
+  --tarfia-shadow: 0 1px 3px rgba(26, 39, 68, 0.08);
+  --tarfia-shadow-hover: 0 10px 40px -10px rgba(26, 39, 68, 0.15);
+  --tarfia-transition: 0.2s ease;
+}
+
+/* Tema oscuro */
+[data-theme="dark"] {
+  --tarfia-bg: #0f172a;
+  --tarfia-surface: #1e293b;
+  --tarfia-surface-hover: #334155;
+  --tarfia-accent: #fbbf24;
+  --tarfia-accent-hover: #fcd34d;
+  --tarfia-accent-light: #422006;
+  --tarfia-link: #38bdf8;
+  --tarfia-link-hover: #7dd3fc;
+  --tarfia-text: #f1f5f9;
+  --tarfia-muted: #94a3b8;
+  --tarfia-border: #334155;
+  --tarfia-nav: #0a1628;
+  --tarfia-nav-text: #e2e8f0;
+  --tarfia-gold: #f7b32b;
+  --tarfia-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  --tarfia-shadow-hover: 0 10px 40px -10px rgba(0, 0, 0, 0.5);
+}
+
+* { box-sizing: border-box; }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}
+
+html { scroll-behavior: smooth; }
+body {
+  min-height: 100vh;
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+  font-size: 0.9375rem;
+  color: var(--tarfia-text);
+  background: var(--tarfia-bg);
+  line-height: 1.5;
+}
+
+/* ----- Sidebar móvil ----- */
+.tarfia-sidebar-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 199;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+  -webkit-backdrop-filter: blur(2px);
+  backdrop-filter: blur(2px);
+}
+.tarfia-sidebar-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.tarfia-sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 280px;
+  max-width: 85vw;
+  height: 100%;
+  background: var(--tarfia-nav);
+  z-index: 200;
+  display: flex;
+  flex-direction: column;
+  transform: translateX(-100%);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 4px 0 24px rgba(0,0,0,0.2);
+}
+.tarfia-sidebar.active {
+  transform: translateX(0);
+}
+
+.tarfia-sidebar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+.tarfia-sidebar-logo {
+  height: 32px;
+  width: auto;
+}
+.tarfia-sidebar-close {
+  background: none;
+  border: none;
+  color: rgba(255,255,255,0.7);
+  font-size: 1.25rem;
+  padding: 0.5rem;
+  cursor: pointer;
+  border-radius: var(--tarfia-radius-sm);
+  transition: color var(--tarfia-transition), background var(--tarfia-transition);
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.tarfia-sidebar-close:hover {
+  color: #fff;
+  background: rgba(255,255,255,0.1);
+}
+
+.tarfia-sidebar-nav {
+  flex: 1;
+  padding: 0.75rem 0;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.tarfia-sidebar-nav a {
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+  padding: 0.875rem 1.25rem;
+  color: rgba(255,255,255,0.85);
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 0.9375rem;
+  transition: background var(--tarfia-transition), color var(--tarfia-transition);
+  min-height: 48px;
+}
+.tarfia-sidebar-nav a i {
+  width: 1.25rem;
+  text-align: center;
+  font-size: 1rem;
+}
+.tarfia-sidebar-nav a:hover {
+  background: rgba(255,255,255,0.08);
+  color: #fff;
+}
+.tarfia-sidebar-nav a.active {
+  background: var(--tarfia-accent);
+  color: #1a2744;
+  font-weight: 600;
+}
+
+.tarfia-sidebar-footer {
+  padding: 1rem 1.25rem;
+  border-top: 1px solid rgba(255,255,255,0.1);
+}
+.tarfia-sidebar-user {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  color: rgba(255,255,255,0.7);
+  font-size: 0.875rem;
+  margin-bottom: 0.875rem;
+}
+.tarfia-sidebar-user i {
+  font-size: 1.25rem;
+}
+.tarfia-sidebar-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+.tarfia-sidebar-theme,
+.tarfia-sidebar-logout {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem;
+  border-radius: var(--tarfia-radius-sm);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background var(--tarfia-transition);
+  min-height: 44px;
+  text-decoration: none;
+}
+.tarfia-sidebar-theme {
+  background: rgba(255,255,255,0.08);
+  color: rgba(255,255,255,0.85);
+  border: none;
+}
+.tarfia-sidebar-theme:hover {
+  background: rgba(255,255,255,0.15);
+  color: #fff;
+}
+.tarfia-sidebar-logout {
+  background: rgba(220, 38, 38, 0.15);
+  color: #fca5a5;
+  border: none;
+}
+.tarfia-sidebar-logout:hover {
+  background: rgba(220, 38, 38, 0.25);
+  color: #fecaca;
+}
+
+/* Ocultar sidebar en desktop */
+@media (min-width: 768px) {
+  .tarfia-sidebar,
+  .tarfia-sidebar-overlay {
+    display: none !important;
+  }
+}
+
+/* ----- Topbar ----- */
+.tarfia-nav {
+  background: var(--tarfia-nav);
+  color: var(--tarfia-nav-text);
+  padding: 0 1.5rem;
+  height: 56px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+.tarfia-nav .container {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  gap: 1rem;
+}
+.tarfia-brand {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  transition: opacity var(--tarfia-transition);
+}
+.tarfia-brand:hover { opacity: 0.9; }
+.tarfia-logo {
+  height: 32px;
+  width: auto;
+}
+.tarfia-nav-links {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  list-style: none;
+  margin: 0 auto 0 1.5rem;
+  padding: 0;
+}
+.tarfia-nav-links a {
+  color: var(--tarfia-nav-text);
+  text-decoration: none;
+  padding: 0.5rem 0.875rem;
+  border-radius: var(--tarfia-radius-sm);
+  font-weight: 500;
+  font-size: 0.875rem;
+  transition: background var(--tarfia-transition), color var(--tarfia-transition);
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+}
+.tarfia-nav-links a:hover { background: rgba(255,255,255,0.08); color: #fff; }
+.tarfia-nav-links a.active { background: var(--tarfia-accent); color: #1a2744; font-weight: 600; }
+.tarfia-nav-links a i { font-size: 0.875rem; }
+
+.tarfia-nav-user {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  margin-left: auto;
+}
+.tarfia-nav-user .user-name {
+  font-size: 0.8125rem;
+  color: rgba(255,255,255,0.7);
+  max-width: 120px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.tarfia-nav-user .btn-logout {
+  color: rgba(255,255,255,0.7);
+  text-decoration: none;
+  font-size: 0.875rem;
+  padding: 0.5rem;
+  border-radius: var(--tarfia-radius-sm);
+  transition: color var(--tarfia-transition), background var(--tarfia-transition);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+}
+.tarfia-nav-user .btn-logout:hover { 
+  background: rgba(255,255,255,0.1);
+  color: #fff;
+}
+
+/* Toggle de tema - compatible con todos los navegadores */
+.tarfia-theme-toggle {
+  appearance: none;
+  -webkit-appearance: none;
+  background: rgba(255,255,255,0.08);
+  border: none;
+  color: var(--tarfia-nav-text);
+  font-size: 1rem;
+  padding: 0;
+  width: 36px;
+  height: 36px;
+  cursor: pointer;
+  border-radius: var(--tarfia-radius-sm);
+  transition: background var(--tarfia-transition), color var(--tarfia-transition);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.tarfia-theme-toggle:hover {
+  background: rgba(255,255,255,0.15);
+  color: #fff;
+}
+.tarfia-theme-toggle:focus {
+  outline: none;
+}
+.tarfia-theme-toggle:focus-visible {
+  outline: 2px solid var(--tarfia-accent);
+  outline-offset: 2px;
+}
+.tarfia-theme-toggle i {
+  pointer-events: none;
+  font-size: 0.9375rem;
+}
+
+/* Hamburger toggle móvil */
+.tarfia-nav-toggle {
+  display: none;
+  appearance: none;
+  -webkit-appearance: none;
+  background: none;
+  border: none;
+  color: var(--tarfia-nav-text);
+  padding: 0;
+  cursor: pointer;
+  border-radius: var(--tarfia-radius-sm);
+  font-size: 1.125rem;
+  width: 40px;
+  height: 40px;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: background var(--tarfia-transition);
+}
+.tarfia-nav-toggle:hover {
+  background: rgba(255,255,255,0.1);
+}
+.tarfia-nav-toggle i {
+  pointer-events: none;
+}
+
+/* Responsive móvil */
+@media (max-width: 767px) {
+  .tarfia-nav {
+    padding: 0 1rem;
+    height: 52px;
+  }
+  .tarfia-nav .container {
+    gap: 0.75rem;
+  }
+  .tarfia-nav-toggle {
+    display: flex;
+    order: 1;
+  }
+  .tarfia-brand {
+    order: 2;
+    flex: 1;
+    justify-content: center;
+  }
+  .tarfia-logo {
+    height: 26px;
+  }
+  .tarfia-nav-links {
+    display: none;
+  }
+  .tarfia-nav-user {
+    order: 3;
+    gap: 0.375rem;
+    margin-left: 0;
+  }
+  .tarfia-nav-user .user-name {
+    display: none;
+  }
+  .tarfia-nav-user .btn-logout {
+    width: 40px;
+    height: 40px;
+  }
+  .tarfia-theme-toggle {
+    width: 40px;
+    height: 40px;
+  }
+}
+
+/* ----- Main ----- */
+.tarfia-main { padding: 1.5rem 0 2rem; }
+.tarfia-main .container { max-width: 1280px; }
+@media (max-width: 767px) {
+  .tarfia-main { padding: 1rem 0 1.5rem; }
+  .tarfia-main .container { padding-left: 1rem; padding-right: 1rem; }
+}
+
+/* ----- Page title ----- */
+.tarfia-page-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin-bottom: 1.25rem;
+  color: var(--tarfia-text);
+}
+
+/* ----- Cards ----- */
+.tarfia-card {
+  background: var(--tarfia-surface);
+  border-radius: var(--tarfia-radius);
+  box-shadow: var(--tarfia-shadow);
+  border: 1px solid var(--tarfia-border);
+  overflow: hidden;
+  transition: box-shadow var(--tarfia-transition), transform var(--tarfia-transition);
+}
+.tarfia-card:hover { box-shadow: var(--tarfia-shadow-hover); }
+.tarfia-card-header {
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid var(--tarfia-border);
+  background: var(--tarfia-surface-hover);
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+.tarfia-card-body { padding: 1.25rem; }
+.tarfia-card-footer { padding: 0.75rem 1.25rem; border-top: 1px solid var(--tarfia-border); background: var(--tarfia-surface-hover); }
+@media (max-width: 767px) {
+  .tarfia-card-body { padding: 1rem; }
+  .tarfia-card-header { padding: 0.875rem 1rem; flex-direction: column; align-items: stretch; }
+  .tarfia-card-header .tarfia-btn { width: 100%; justify-content: center; }
+  .tarfia-card-footer { padding: 0.65rem 1rem; }
+}
+
+/* Stats cards (home) */
+.tarfia-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  align-items: start;
+}
+.tarfia-stat {
+  background: var(--tarfia-surface);
+  border-radius: var(--tarfia-radius);
+  padding: 1.25rem;
+  box-shadow: var(--tarfia-shadow);
+  border: 1px solid var(--tarfia-border);
+  transition: box-shadow var(--tarfia-transition), transform var(--tarfia-transition);
+  position: relative;
+  overflow: hidden;
+}
+.tarfia-stat:hover { box-shadow: var(--tarfia-shadow-hover); transform: translateY(-2px); }
+.tarfia-stat::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background: var(--tarfia-accent);
+}
+.tarfia-stat.stat-success::before { background: var(--tarfia-success); }
+.tarfia-stat.stat-info::before { background: var(--tarfia-info); }
+.tarfia-stat-label { font-size: 0.8125rem; color: var(--tarfia-muted); font-weight: 500; margin-bottom: 0.25rem; }
+.tarfia-stat-value { font-size: 1.75rem; font-weight: 700; letter-spacing: -0.02em; color: var(--tarfia-text); }
+.tarfia-stat ul { padding-left: 0; margin: 0; list-style: none; }
+.tarfia-stat ul li { padding: 0.35rem 0; font-size: 0.875rem; line-height: 1.4; }
+
+/* Por nivel: 2 columnas y más compacto para que no destaque en altura */
+.tarfia-stat.stat-info .tarfia-nivel-list {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 0.5rem;
+  column-gap: 0.75rem;
+}
+.tarfia-stat.stat-info ul li { padding: 0.15rem 0; font-size: 0.8125rem; }
+.tarfia-nivel-link {
+  color: var(--tarfia-text);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.2rem 0.35rem;
+  margin: 0 -0.35rem;
+  border-radius: 0.25rem;
+  transition: background var(--tarfia-transition), color var(--tarfia-transition);
+}
+.tarfia-nivel-link:hover { background: rgba(3, 105, 161, 0.1); color: var(--tarfia-link); }
+.tarfia-nivel-link strong { min-width: 1.75rem; text-align: right; font-size: 0.8125rem; }
+.tarfia-stat-label .text-muted { font-weight: 400; opacity: 0.85; }
+.tarfia-stat-link {
+  display: inline-block;
+  margin-top: 0.75rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--tarfia-link);
+  text-decoration: none;
+  transition: color var(--tarfia-transition);
+}
+.tarfia-stat-link:hover { color: var(--tarfia-link-hover); }
+
+/* Móvil: stats en columna, nivel en 1 columna, menos padding */
+@media (max-width: 767px) {
+  .tarfia-stats { grid-template-columns: 1fr; gap: 0.75rem; margin-bottom: 1rem; }
+  .tarfia-stat { padding: 1rem; }
+  .tarfia-stat-value { font-size: 1.5rem; }
+  .tarfia-stat.stat-info .tarfia-nivel-list { grid-template-columns: 1fr; }
+  .tarfia-stat.stat-info ul li { padding: 0.25rem 0; }
+  .tarfia-nivel-link { padding: 0.4rem 0.35rem; min-height: 44px; }
+  .tarfia-page-title { font-size: 1.25rem; margin-bottom: 1rem; }
+}
+
+/* ----- Tables ----- */
+.tarfia-table-wrap {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+@media (max-width: 767px) {
+  .tarfia-table { font-size: 0.8125rem; min-width: 560px; }
+  .tarfia-table th, .tarfia-table td { padding: 0.5rem 0.6rem; }
+}
+.tarfia-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+.tarfia-table th {
+  text-align: left;
+  padding: 0.75rem 1rem;
+  font-weight: 600;
+  color: var(--tarfia-muted);
+  background: var(--tarfia-surface-hover);
+  border-bottom: 1px solid var(--tarfia-border);
+  white-space: nowrap;
+}
+.tarfia-table td {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--tarfia-border);
+}
+.tarfia-table tbody tr { transition: background var(--tarfia-transition); }
+.tarfia-table tbody tr:hover { background: var(--tarfia-surface-hover); }
+.tarfia-table tbody tr:last-child td { border-bottom: none; }
+
+/* ----- Buttons ----- */
+.tarfia-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.375rem;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  font-family: inherit;
+  border-radius: var(--tarfia-radius-sm);
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background var(--tarfia-transition), color var(--tarfia-transition), box-shadow var(--tarfia-transition);
+}
+.tarfia-btn-primary {
+  background: var(--tarfia-accent);
+  color: #1a2744;
+  font-weight: 600;
+}
+.tarfia-btn-primary:hover { background: var(--tarfia-accent-hover); color: #1a2744; }
+.tarfia-btn-success { background: var(--tarfia-success); color: #fff; }
+.tarfia-btn-success:hover { background: #047857; color: #fff; }
+.tarfia-btn-outline {
+  background: transparent;
+  color: var(--tarfia-link);
+  border: 1px solid var(--tarfia-link);
+}
+.tarfia-btn-outline:hover { background: rgba(3, 105, 161, 0.1); color: var(--tarfia-link-hover); border-color: var(--tarfia-link-hover); }
+.tarfia-btn-sm { padding: 0.35rem 0.75rem; font-size: 0.8125rem; }
+.tarfia-btn-outline.tarfia-btn-sm { padding: 0.3rem 0.6rem; }
+
+/* ----- Forms ----- */
+.tarfia-input-sm, .tarfia-select-sm {
+  padding: 0.3rem 0.5rem;
+  font-size: 0.75rem;
+  min-height: auto;
+}
+.filters-row th {
+  padding: 0.35rem 0.5rem !important;
+  background: var(--tarfia-surface) !important;
+  border-bottom: 2px solid var(--tarfia-border) !important;
+}
+.tarfia-form-label { font-weight: 500; color: var(--tarfia-text); margin-bottom: 0.35rem; font-size: 0.875rem; }
+.tarfia-input, .tarfia-select {
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.9375rem;
+  font-family: inherit;
+  color: var(--tarfia-text);
+  background: var(--tarfia-surface);
+  border: 1px solid var(--tarfia-border);
+  border-radius: var(--tarfia-radius-sm);
+  transition: border-color var(--tarfia-transition), box-shadow var(--tarfia-transition);
+}
+.tarfia-input:focus, .tarfia-select:focus {
+  outline: none;
+  border-color: var(--tarfia-link);
+  box-shadow: 0 0 0 3px rgba(3, 105, 161, 0.15);
+}
+.tarfia-btn:focus-visible, .tarfia-nav-links a:focus-visible, .tarfia-input:focus-visible, .tarfia-select:focus-visible {
+  outline: 2px solid var(--tarfia-link);
+  outline-offset: 2px;
+}
+@media (max-width: 767px) {
+  .tarfia-btn { min-height: 44px; padding: 0.6rem 1rem; }
+  .tarfia-input, .tarfia-select { min-height: 44px; font-size: 16px; }
+  .tarfia-flex { flex-direction: column; align-items: stretch; }
+  .tarfia-flex .tarfia-btn { width: 100%; }
+}
+
+/* ----- Alerts ----- */
+.tarfia-alert {
+  padding: 1rem 1.25rem;
+  border-radius: var(--tarfia-radius-sm);
+  margin-bottom: 1rem;
+  font-size: 0.875rem;
+}
+.tarfia-alert-danger { background: #fef2f2; color: var(--tarfia-danger); border: 1px solid #fecaca; }
+.tarfia-alert-success { background: #ecfdf5; color: var(--tarfia-success); border: 1px solid #a7f3d0; }
+.tarfia-alert-info { 
+  display: flex;
+  align-items: flex-start;
+  gap: 0.625rem;
+}
+.tarfia-alert-info i { margin-top: 0.125rem; }
+
+/* Enlace de ayuda en labels */
+.tarfia-link-help {
+  float: right;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--tarfia-link);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  transition: color var(--tarfia-transition);
+}
+.tarfia-link-help:hover {
+  color: var(--tarfia-link-hover);
+  text-decoration: underline;
+}
+
+/* ----- Pagination ----- */
+.tarfia-pagination {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.25rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.tarfia-pagination a, .tarfia-pagination span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2rem;
+  height: 2rem;
+  padding: 0 0.5rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--tarfia-muted);
+  text-decoration: none;
+  border-radius: var(--tarfia-radius-sm);
+  transition: background var(--tarfia-transition), color var(--tarfia-transition);
+}
+.tarfia-pagination a:hover { background: var(--tarfia-surface-hover); color: var(--tarfia-link); }
+.tarfia-pagination .active span { background: var(--tarfia-accent); color: #1a2744; font-weight: 600; }
+@media (max-width: 767px) {
+  .tarfia-pagination a, .tarfia-pagination span { min-width: 40px; min-height: 40px; }
+}
+
+/* ----- Login ----- */
+.tarfia-login-wrap {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  background: linear-gradient(135deg, #1a2744 0%, #0f172a 50%, #2d3a52 100%);
+  background-attachment: fixed;
+}
+.tarfia-login-card {
+  width: 100%;
+  max-width: 400px;
+  background: rgba(255,255,255,0.98);
+  border-radius: 1.25rem;
+  box-shadow: 0 25px 50px -12px rgba(0,0,0,0.35);
+  padding: 2rem;
+  animation: tarfia-fade-up 0.4s ease;
+}
+@keyframes tarfia-fade-up {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.tarfia-login-title { font-size: 1.5rem; font-weight: 700; margin-bottom: 1.5rem; color: var(--tarfia-text); }
+.tarfia-login-logo { text-align: center; }
+.tarfia-login .tarfia-form-label { display: block; }
+.tarfia-login .tarfia-input { margin-bottom: 1rem; }
+.tarfia-login .tarfia-btn { width: 100%; padding: 0.65rem; font-size: 1rem; margin-top: 0.25rem; }
+@media (max-width: 767px) {
+  .tarfia-login-wrap { padding: 1rem; align-items: flex-start; padding-top: 2rem; }
+  .tarfia-login-card { padding: 1.5rem; }
+  .tarfia-login .tarfia-input { font-size: 16px; min-height: 48px; }
+}
+
+/* ----- Footer ----- */
+.tarfia-footer {
+  padding: 1rem 0;
+  text-align: center;
+  font-size: 0.8125rem;
+  color: var(--tarfia-muted);
+  border-top: 1px solid var(--tarfia-border);
+  margin-top: 2rem;
+}
+
+/* Utilidades */
+.tarfia-muted { color: var(--tarfia-muted); font-size: 0.875rem; }
+.tarfia-flex { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem; }
+
+/* ----- DataTables overrides ----- */
+div.dt-container {
+  font-size: 0.875rem;
+  color: var(--tarfia-text);
+}
+div.dt-container .dt-length,
+div.dt-container .dt-search,
+div.dt-container .dt-info,
+div.dt-container .dt-processing {
+  margin: 0;
+  padding: 0;
+}
+div.dt-container .dt-length select {
+  padding: 0.35rem 0.6rem;
+  border-radius: var(--tarfia-radius-sm);
+  border: 1px solid var(--tarfia-border);
+  background: var(--tarfia-surface);
+  font-size: 0.875rem;
+  min-width: 65px;
+}
+div.dt-container .dt-search input {
+  padding: 0.45rem 0.75rem;
+  border-radius: var(--tarfia-radius-sm);
+  border: 1px solid var(--tarfia-border);
+  background: var(--tarfia-surface);
+  font-size: 0.875rem;
+  width: 200px;
+  transition: border-color var(--tarfia-transition), box-shadow var(--tarfia-transition);
+}
+div.dt-container .dt-search input:focus {
+  outline: none;
+  border-color: var(--tarfia-link);
+  box-shadow: 0 0 0 3px rgba(3, 105, 161, 0.15);
+}
+div.dt-container .tarfia-dt-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  padding: 0.75rem 1.25rem;
+  border-bottom: 1px solid var(--tarfia-border);
+  background: var(--tarfia-surface-hover);
+}
+div.dt-container .tarfia-dt-top .dt-info {
+  font-weight: 600;
+  color: var(--tarfia-text);
+}
+div.dt-container .tarfia-dt-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  padding: 1rem 1.25rem;
+  border-top: 1px solid var(--tarfia-border);
+  background: var(--tarfia-surface-hover);
+}
+div.dt-container .dt-paging {
+  display: flex;
+  gap: 0.25rem;
+}
+div.dt-container .dt-paging button {
+  padding: 0.35rem 0.65rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--tarfia-muted);
+  background: transparent;
+  border: 1px solid var(--tarfia-border);
+  border-radius: var(--tarfia-radius-sm);
+  cursor: pointer;
+  transition: background var(--tarfia-transition), color var(--tarfia-transition), border-color var(--tarfia-transition);
+}
+div.dt-container .dt-paging button:hover:not(.disabled) {
+  background: var(--tarfia-surface-hover);
+  color: var(--tarfia-link);
+  border-color: var(--tarfia-link);
+}
+div.dt-container .dt-paging button.current {
+  background: var(--tarfia-accent);
+  color: #1a2744;
+  border-color: var(--tarfia-accent);
+  font-weight: 600;
+}
+div.dt-container .dt-paging button.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+div.dt-container .dt-processing {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(255,255,255,0.9);
+  padding: 0.75rem 1.25rem;
+  border-radius: var(--tarfia-radius-sm);
+  box-shadow: var(--tarfia-shadow);
+  z-index: 10;
+  font-weight: 500;
+}
+div.dt-container .dt-info {
+  color: var(--tarfia-muted);
+  font-size: 0.8125rem;
+}
+table.dataTable thead th {
+  cursor: pointer;
+  user-select: none;
+}
+table.dataTable thead th.dt-ordering-asc::after,
+table.dataTable thead th.dt-ordering-desc::after {
+  color: var(--tarfia-link);
+  opacity: 1;
+}
+@media (max-width: 767px) {
+  div.dt-container .tarfia-dt-top,
+  div.dt-container .tarfia-dt-bottom {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.5rem;
+    padding: 0.75rem 1rem;
+  }
+  div.dt-container .dt-search input { width: 100%; font-size: 16px; min-height: 44px; }
+  div.dt-container .dt-length select { width: 100%; min-height: 44px; font-size: 16px; }
+  div.dt-container .dt-paging { justify-content: center; flex-wrap: wrap; }
+  div.dt-container .dt-paging button { min-width: 36px; min-height: 36px; padding: 0.35rem; font-size: 0.75rem; }
+  div.dt-container .dt-info { text-align: center; font-size: 0.75rem; }
+  
+  /* Tabla más compacta en móvil */
+  table.dataTable { font-size: 0.8125rem; }
+  table.dataTable thead th { 
+    padding: 0.5rem 0.4rem !important; 
+    font-size: 0.75rem;
+    white-space: nowrap;
+  }
+  table.dataTable tbody td { 
+    padding: 0.5rem 0.4rem !important;
+    font-size: 0.8125rem;
+  }
+  
+  /* Ocultar columnas secundarias en móvil */
+  .hide-mobile { display: none !important; }
+  
+  /* Tabla socios: ocultar Cuota(5), Móvil(7), Fecha(8) */
+  #tablaSocios th:nth-child(5),
+  #tablaSocios td:nth-child(5),
+  #tablaSocios th:nth-child(7),
+  #tablaSocios td:nth-child(7),
+  #tablaSocios th:nth-child(8),
+  #tablaSocios td:nth-child(8) {
+    display: none !important;
+  }
+  
+  /* Tabla familias: ocultar Teléfono(6), Email(8) */
+  #tablaFamilias th:nth-child(6),
+  #tablaFamilias td:nth-child(6),
+  #tablaFamilias th:nth-child(8),
+  #tablaFamilias td:nth-child(8) {
+    display: none !important;
+  }
+  
+  /* Filtros de columna más compactos */
+  .filters-row th {
+    padding: 0.25rem 0.3rem !important;
+  }
+  .filters-row .tarfia-input-sm,
+  .filters-row .tarfia-select-sm {
+    padding: 0.25rem 0.35rem;
+    font-size: 0.7rem;
+    min-height: 32px;
+  }
+  
+  /* Número de fila más pequeño */
+  .tarfia-row-num {
+    min-width: 1.5rem;
+    font-size: 0.75rem;
+  }
+  
+  /* Acciones más compactas */
+  .tarfia-acciones {
+    gap: 0.25rem;
+  }
+  .tarfia-acciones .tarfia-btn {
+    padding: 0.25rem 0.4rem;
+    font-size: 0.75rem;
+  }
+  .tarfia-acciones .tarfia-btn i {
+    font-size: 0.8rem;
+  }
+}
+
+/* Contenedor de tabla - el scroll se aplica solo al wrapper interno de la tabla */
+.tarfia-table-responsive {
+  position: relative;
+}
+
+/* Wrapper interno que solo contiene la tabla (añadido por JS) */
+.tarfia-table-scroll-wrapper {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin: 0 -1px;
+  position: relative;
+}
+
+/* Indicador de scroll en móvil */
+@media (max-width: 767px) {
+  .tarfia-table-scroll-wrapper {
+    margin: 0;
+  }
+  .tarfia-table-scroll-wrapper::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 25px;
+    background: linear-gradient(to right, transparent, var(--tarfia-surface) 80%);
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .tarfia-table-scroll-wrapper.can-scroll::after {
+    opacity: 1;
+  }
+  .tarfia-table-scroll-wrapper.scrolled-end::after {
+    opacity: 0;
+  }
+}
+
+/* Familia clickable link */
+.tarfia-familia-link {
+  color: var(--tarfia-link);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color var(--tarfia-transition);
+}
+.tarfia-familia-link:hover {
+  color: var(--tarfia-link-hover);
+  text-decoration: underline;
+}
+
+/* Loading indicator */
+.tarfia-loading {
+  display: inline-block;
+  color: var(--tarfia-link);
+  font-weight: 500;
+}
+
+/* Número de fila en tablas */
+.tarfia-row-num {
+  display: inline-block;
+  min-width: 2rem;
+  text-align: center;
+  color: var(--tarfia-muted);
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+/* Columna de acciones */
+.tarfia-acciones {
+  display: flex;
+  gap: 0.35rem;
+  flex-wrap: nowrap;
+}
+.tarfia-acciones .tarfia-btn {
+  white-space: nowrap;
+}
+
+/* Badge para contadores */
+.tarfia-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.75rem;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--tarfia-link);
+  background: var(--tarfia-surface-hover);
+  border-radius: 999px;
+}
+
+/* Toggle de tema */
+.tarfia-theme-toggle {
+  background: transparent;
+  border: none;
+  color: var(--tarfia-nav-text);
+  font-size: 1.1rem;
+  padding: 0.5rem;
+  cursor: pointer;
+  opacity: 0.8;
+  transition: opacity var(--tarfia-transition);
+  margin-right: 0.5rem;
+}
+.tarfia-theme-toggle:hover {
+  opacity: 1;
+}
+
+/* Breadcrumbs */
+.tarfia-breadcrumbs {
+  margin-bottom: 1rem;
+}
+.tarfia-breadcrumbs-list {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  font-size: 0.875rem;
+}
+.tarfia-breadcrumbs-item {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+.tarfia-breadcrumbs-item a {
+  color: var(--tarfia-link);
+  text-decoration: none;
+}
+.tarfia-breadcrumbs-item a:hover {
+  color: var(--tarfia-link-hover);
+  text-decoration: underline;
+}
+.tarfia-breadcrumbs-item.active span {
+  color: var(--tarfia-muted);
+}
+.tarfia-breadcrumbs-sep {
+  font-size: 0.6rem;
+  color: var(--tarfia-muted);
+  margin: 0 0.25rem;
+}
+
+/* ----- Estilos de impresión ----- */
+@media print {
+  body {
+    background: white !important;
+    color: black !important;
+    font-size: 10pt !important;
+  }
+  .tarfia-nav,
+  .tarfia-nav-toggle,
+  .no-print,
+  .tarfia-btn,
+  .btn-logout,
+  .tarfia-dt-top,
+  .tarfia-dt-bottom,
+  .filters-row,
+  .tarfia-filtros-grupo {
+    display: none !important;
+  }
+  .tarfia-main {
+    padding: 0 !important;
+  }
+  .container {
+    max-width: 100% !important;
+    padding: 0 !important;
+  }
+  .tarfia-card {
+    box-shadow: none !important;
+    border: 1px solid #ccc !important;
+  }
+  .tarfia-table th,
+  .tarfia-table td {
+    padding: 6px 8px !important;
+    font-size: 9pt !important;
+  }
+  .tarfia-acciones {
+    display: none !important;
+  }
+  a {
+    color: black !important;
+    text-decoration: none !important;
+  }
+  .tarfia-page-title {
+    font-size: 14pt !important;
+  }
+}
+
+/* ===== TOAST SYSTEM ===== */
+.tarfia-toast-container {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  pointer-events: none;
+  max-width: calc(100vw - 2rem);
+}
+
+@media (max-width: 576px) {
+  .tarfia-toast-container {
+    top: auto;
+    bottom: 1rem;
+    right: 0.5rem;
+    left: 0.5rem;
+    align-items: stretch;
+  }
+}
+
+.tarfia-toast {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  min-width: 300px;
+  max-width: 420px;
+  padding: 1rem 1.25rem;
+  background: var(--tarfia-surface);
+  border-radius: var(--tarfia-radius);
+  box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.25), 0 0 0 1px var(--tarfia-border);
+  pointer-events: auto;
+  transform: translateX(120%);
+  opacity: 0;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
+}
+
+@media (max-width: 576px) {
+  .tarfia-toast {
+    min-width: 0;
+    max-width: none;
+    transform: translateY(120%);
+  }
+}
+
+.tarfia-toast.show {
+  transform: translateX(0);
+  opacity: 1;
+}
+
+@media (max-width: 576px) {
+  .tarfia-toast.show {
+    transform: translateY(0);
+  }
+}
+
+.tarfia-toast.hiding {
+  transform: translateX(120%);
+  opacity: 0;
+}
+
+@media (max-width: 576px) {
+  .tarfia-toast.hiding {
+    transform: translateY(120%);
+  }
+}
+
+.tarfia-toast-icon {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  font-size: 0.875rem;
+}
+
+.tarfia-toast-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.tarfia-toast-title {
+  font-weight: 600;
+  font-size: 0.9375rem;
+  color: var(--tarfia-text);
+  margin-bottom: 0.125rem;
+}
+
+.tarfia-toast-message {
+  font-size: 0.875rem;
+  color: var(--tarfia-muted);
+  line-height: 1.4;
+}
+
+.tarfia-toast-close {
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  border-radius: 6px;
+  color: var(--tarfia-muted);
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+  margin: -0.25rem -0.5rem -0.25rem 0;
+}
+
+.tarfia-toast-close:hover {
+  background: var(--tarfia-border);
+  color: var(--tarfia-text);
+}
+
+.tarfia-toast-progress {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 3px;
+  border-radius: 0 0 var(--tarfia-radius) var(--tarfia-radius);
+  transition: width linear;
+}
+
+/* Toast variants */
+.tarfia-toast-success .tarfia-toast-icon {
+  background: rgba(5, 150, 105, 0.15);
+  color: var(--tarfia-success);
+}
+.tarfia-toast-success .tarfia-toast-progress {
+  background: var(--tarfia-success);
+}
+
+.tarfia-toast-error .tarfia-toast-icon {
+  background: rgba(220, 38, 38, 0.15);
+  color: var(--tarfia-danger);
+}
+.tarfia-toast-error .tarfia-toast-progress {
+  background: var(--tarfia-danger);
+}
+
+.tarfia-toast-warning .tarfia-toast-icon {
+  background: rgba(217, 119, 6, 0.15);
+  color: var(--tarfia-warning);
+}
+.tarfia-toast-warning .tarfia-toast-progress {
+  background: var(--tarfia-warning);
+}
+
+.tarfia-toast-info .tarfia-toast-icon {
+  background: rgba(2, 132, 199, 0.15);
+  color: var(--tarfia-info);
+}
+.tarfia-toast-info .tarfia-toast-progress {
+  background: var(--tarfia-info);
+}
+
+.tarfia-toast-loading .tarfia-toast-icon {
+  background: rgba(247, 179, 43, 0.15);
+  color: var(--tarfia-accent);
+}
+
+/* Loading spinner */
+.tarfia-toast-spinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--tarfia-border);
+  border-top-color: var(--tarfia-accent);
+  border-radius: 50%;
+  animation: tarfia-spin 0.8s linear infinite;
+}
+
+@keyframes tarfia-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Confirm dialog toast */
+.tarfia-toast-confirm {
+  flex-direction: column;
+  max-width: 380px;
+}
+
+.tarfia-toast-confirm .tarfia-toast-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  width: 100%;
+}
+
+.tarfia-toast-confirm .tarfia-toast-actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  justify-content: flex-end;
+}
+
+.tarfia-toast-confirm .tarfia-toast-btn {
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: none;
+}
+
+.tarfia-toast-btn-cancel {
+  background: var(--tarfia-border);
+  color: var(--tarfia-text);
+}
+.tarfia-toast-btn-cancel:hover {
+  background: var(--tarfia-muted);
+  color: white;
+}
+
+.tarfia-toast-btn-confirm {
+  background: var(--tarfia-danger);
+  color: white;
+}
+.tarfia-toast-btn-confirm:hover {
+  background: #b91c1c;
+}
+
+.tarfia-toast-btn-primary {
+  background: var(--tarfia-accent);
+  color: var(--tarfia-nav);
+}
+.tarfia-toast-btn-primary:hover {
+  background: var(--tarfia-accent-hover);
+}

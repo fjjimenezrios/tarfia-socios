@@ -1,0 +1,52 @@
+# Configuración local (contiene credenciales)
+config/config.php
+
+# Caché de la aplicación
+cache/*.cache
+cache/*.tmp
+
+# Logs
+*.log
+logs/
+
+# Archivos del sistema
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+
+# IDEs
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+
+# Dependencias (si se añaden en el futuro)
+vendor/
+node_modules/
+
+# Archivos temporales PHP
+*.php.bak
+
+# Archivos de iconos generados (se generan con generar-iconos.php)
+assets/img/icon-192.png
+assets/img/icon-512.png
+
+# Archivos sensibles
+*.pem
+*.key
+*.env
+.env
+.env.*
+
+# Backups de base de datos
+*.sql.bak
+backups/
+
+# Archivos grandes originales (logos AI, PSD, etc.)
+*.ai
+*.psd
+*.sketch
+
+Logos/
