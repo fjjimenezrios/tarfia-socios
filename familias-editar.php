@@ -12,7 +12,7 @@ if ($id <= 0) {
 }
 
 // Obtener datos de la familia
-$st = $pdo->prepare("SELECT * FROM `Familias Socios` WHERE `Id` = ?");
+$st = $pdo->prepare("SELECT * FROM `Familias_Socios` WHERE `Id` = ?");
 $st->execute([$id]);
 $familia = $st->fetch();
 
@@ -51,18 +51,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $error = 'La localidad es obligatoria.';
     } else {
         try {
-            $sql = "UPDATE `Familias Socios` SET 
+            $sql = "UPDATE `Familias_Socios` SET
                 `Apellidos` = ?,
-                `Nombre padre` = ?,
-                `Apellidos padre` = ?,
-                `Nombre madre` = ?,
-                `Apellidos madre` = ?,
+                `Nombre_padre` = ?,
+                `Apellidos_padre` = ?,
+                `Nombre_madre` = ?,
+                `Apellidos_madre` = ?,
                 `Localidad` = ?,
-                `Teléfono` = ?,
-                `Movil Padre` = ?,
-                `Movil Madre` = ?,
-                `e-mail` = ?,
-                `Dirección` = ?
+                `Telefono` = ?,
+                `Movil_Padre` = ?,
+                `Movil_Madre` = ?,
+                `e_mail` = ?,
+                `Direccion` = ?
                 WHERE `Id` = ?";
             $st = $pdo->prepare($sql);
             $st->execute([
@@ -83,7 +83,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $success = true;
             
             // Recargar datos
-            $st = $pdo->prepare("SELECT * FROM `Familias Socios` WHERE `Id` = ?");
+            $st = $pdo->prepare("SELECT * FROM `Familias_Socios` WHERE `Id` = ?");
             $st->execute([$id]);
             $familia = $st->fetch();
         } catch (PDOException $e) {
@@ -117,43 +117,43 @@ require __DIR__ . '/includes/header.php';
                 <div class="col-12"><hr class="my-2"><h6 class="tarfia-muted">Datos del padre</h6></div>
                 <div class="col-md-4">
                     <label for="nombre_padre" class="tarfia-form-label">Nombre <span style="color:var(--tarfia-danger)">*</span></label>
-                    <input type="text" class="tarfia-input" id="nombre_padre" name="nombre_padre" required value="<?= htmlspecialchars($familia['Nombre padre'] ?? '') ?>">
+                    <input type="text" class="tarfia-input" id="nombre_padre" name="nombre_padre" required value="<?= htmlspecialchars($familia['Nombre_padre'] ?? '') ?>">
                 </div>
                 <div class="col-md-4">
                     <label for="apellidos_padre" class="tarfia-form-label">Apellidos <span style="color:var(--tarfia-danger)">*</span></label>
-                    <input type="text" class="tarfia-input" id="apellidos_padre" name="apellidos_padre" required value="<?= htmlspecialchars($familia['Apellidos padre'] ?? '') ?>">
+                    <input type="text" class="tarfia-input" id="apellidos_padre" name="apellidos_padre" required value="<?= htmlspecialchars($familia['Apellidos_padre'] ?? '') ?>">
                 </div>
                 <div class="col-md-4">
                     <label for="movil_padre" class="tarfia-form-label">Móvil <span style="color:var(--tarfia-danger)">*</span></label>
-                    <input type="tel" class="tarfia-input" id="movil_padre" name="movil_padre" required value="<?= htmlspecialchars($familia['Movil Padre'] ?? '') ?>">
+                    <input type="tel" class="tarfia-input" id="movil_padre" name="movil_padre" required value="<?= htmlspecialchars($familia['Movil_Padre'] ?? '') ?>">
                 </div>
                 
                 <div class="col-12"><hr class="my-2"><h6 class="tarfia-muted">Datos de la madre</h6></div>
                 <div class="col-md-4">
                     <label for="nombre_madre" class="tarfia-form-label">Nombre <span style="color:var(--tarfia-danger)">*</span></label>
-                    <input type="text" class="tarfia-input" id="nombre_madre" name="nombre_madre" required value="<?= htmlspecialchars($familia['Nombre madre'] ?? '') ?>">
+                    <input type="text" class="tarfia-input" id="nombre_madre" name="nombre_madre" required value="<?= htmlspecialchars($familia['Nombre_madre'] ?? '') ?>">
                 </div>
                 <div class="col-md-4">
                     <label for="apellidos_madre" class="tarfia-form-label">Apellidos <span style="color:var(--tarfia-danger)">*</span></label>
-                    <input type="text" class="tarfia-input" id="apellidos_madre" name="apellidos_madre" required value="<?= htmlspecialchars($familia['Apellidos madre'] ?? '') ?>">
+                    <input type="text" class="tarfia-input" id="apellidos_madre" name="apellidos_madre" required value="<?= htmlspecialchars($familia['Apellidos_madre'] ?? '') ?>">
                 </div>
                 <div class="col-md-4">
                     <label for="movil_madre" class="tarfia-form-label">Móvil <span style="color:var(--tarfia-danger)">*</span></label>
-                    <input type="tel" class="tarfia-input" id="movil_madre" name="movil_madre" required value="<?= htmlspecialchars($familia['Movil Madre'] ?? '') ?>">
+                    <input type="tel" class="tarfia-input" id="movil_madre" name="movil_madre" required value="<?= htmlspecialchars($familia['Movil_Madre'] ?? '') ?>">
                 </div>
                 
                 <div class="col-12"><hr class="my-2"><h6 class="tarfia-muted">Contacto y dirección</h6></div>
                 <div class="col-md-6">
                     <label for="telefono" class="tarfia-form-label">Teléfono fijo</label>
-                    <input type="tel" class="tarfia-input" id="telefono" name="telefono" value="<?= htmlspecialchars($familia['Teléfono'] ?? '') ?>">
+                    <input type="tel" class="tarfia-input" id="telefono" name="telefono" value="<?= htmlspecialchars($familia['Telefono'] ?? '') ?>">
                 </div>
                 <div class="col-md-6">
                     <label for="email" class="tarfia-form-label">Email <span style="color:var(--tarfia-danger)">*</span></label>
-                    <input type="email" class="tarfia-input" id="email" name="email" required value="<?= htmlspecialchars($familia['e-mail'] ?? '') ?>">
+                    <input type="email" class="tarfia-input" id="email" name="email" required value="<?= htmlspecialchars($familia['e_mail'] ?? '') ?>">
                 </div>
                 <div class="col-md-8">
                     <label for="direccion" class="tarfia-form-label">Dirección <span style="color:var(--tarfia-danger)">*</span></label>
-                    <input type="text" class="tarfia-input" id="direccion" name="direccion" required value="<?= htmlspecialchars($familia['Dirección'] ?? '') ?>">
+                    <input type="text" class="tarfia-input" id="direccion" name="direccion" required value="<?= htmlspecialchars($familia['Direccion'] ?? '') ?>">
                 </div>
                 <div class="col-md-4">
                     <label for="localidad" class="tarfia-form-label">Localidad <span style="color:var(--tarfia-danger)">*</span></label>

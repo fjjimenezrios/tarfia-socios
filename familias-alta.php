@@ -35,9 +35,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $error = 'La localidad es obligatoria.';
     } else {
         try {
-            $sql = "INSERT INTO `Familias Socios` (
-                `Apellidos`, `Nombre padre`, `Apellidos padre`, `Nombre madre`, `Apellidos madre`,
-                `Localidad`, `Teléfono`, `Movil Padre`, `Movil Madre`, `e-mail`, `Dirección`
+            $sql = "INSERT INTO `Familias_Socios` (
+                `Apellidos`, `Nombre_padre`, `Apellidos_padre`, `Nombre_madre`, `Apellidos_madre`,
+                `Localidad`, `Telefono`, `Movil_Padre`, `Movil_Madre`, `e_mail`, `Direccion`
             ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
             $st = $pdo->prepare($sql);
             $st->execute([

@@ -13,20 +13,20 @@ $sql = "
     SELECT DISTINCT
         f.`Id`,
         f.`Apellidos`,
-        f.`Dirección` AS Direccion,
+        f.`Direccion`,
         f.`Localidad`,
-        COALESCE(f.`Nombre padre`, f.`Nombre madre`) AS NombreContacto
-    FROM `Familias Socios` f
+        COALESCE(f.`Nombre_padre`, f.`Nombre_madre`) AS NombreContacto
+    FROM `Familias_Socios` f
 ";
 
 if ($soloActivos) {
     $sql .= "
     INNER JOIN `Socios` s ON s.`IdFamilia` = f.`Id`
-        AND s.`Socio/Ex Socio` = 'Socio'
+        AND s.`Socio_Ex_Socio` = 'Socio'
     ";
 }
 
-$sql .= " WHERE f.`Dirección` IS NOT NULL AND TRIM(f.`Dirección`) != ''";
+$sql .= " WHERE f.`Direccion` IS NOT NULL AND TRIM(f.`Direccion`) != ''";
 $sql .= " ORDER BY f.`Apellidos` ASC";
 
 $familias = $pdo->query($sql)->fetchAll(PDO::FETCH_ASSOC);

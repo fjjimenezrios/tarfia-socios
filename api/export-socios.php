@@ -24,7 +24,7 @@ if ($grupo === 'club') {
 
 // Filtro de estado
 if ($estado !== '') {
-    $where[] = "LOWER(TRIM(COALESCE(s.`Socio/Ex Socio`, ''))) = LOWER(?)";
+    $where[] = "LOWER(TRIM(COALESCE(s.`Socio_Ex_Socio`, ''))) = LOWER(?)";
     $params[] = $estado;
 }
 
@@ -48,13 +48,13 @@ $sql = "
         f.`Apellidos` AS Familia,
         n.`Curso`,
         s.`Cuota`,
-        s.`Socio/Ex Socio` AS Estado,
-        s.`Móvil del socio` AS Movil,
-        s.`Fecha de admisión` AS FechaAdmision,
+        s.`Socio_Ex_Socio` AS Estado,
+        s.`Movil_del_socio` AS Movil,
+        s.`Fecha_de_admision` AS FechaAdmision,
         s.`Observaciones`
     FROM `Socios` s
-    LEFT JOIN `Familias Socios` f ON f.`Id` = s.`IdFamilia`
-    LEFT JOIN `Niveles-Cursos` n ON n.`Nivel` = s.`Nivel`
+    LEFT JOIN `Familias_Socios` f ON f.`Id` = s.`IdFamilia`
+    LEFT JOIN `Niveles_Cursos` n ON n.`Nivel` = s.`Nivel`
     $sqlWhere
     ORDER BY f.`Apellidos` ASC, s.`Nombre` ASC
 ";

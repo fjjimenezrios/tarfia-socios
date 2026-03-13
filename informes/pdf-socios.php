@@ -21,7 +21,7 @@ if (!in_array('nombre', $columnas)) {
 
 // Niveles
 $nivelesMap = [];
-$nivelesQuery = $pdo->query("SELECT `Nivel`, `Curso` FROM `Niveles-Cursos` ORDER BY `Nivel`");
+$nivelesQuery = $pdo->query("SELECT `Nivel`, `Curso` FROM `Niveles_Cursos` ORDER BY `Nivel`");
 foreach ($nivelesQuery as $n) {
     $nivelesMap[(int) $n['Nivel']] = $n['Curso'];
 }
@@ -36,10 +36,10 @@ if ($nivelFiltro !== '') {
 }
 
 if ($estadoFiltro === 'socio') {
-    $where[] = 's.`Socio/Ex Socio` = ?';
+    $where[] = 's.`Socio_Ex_Socio` = ?';
     $params[] = 'Socio';
 } elseif ($estadoFiltro === 'exsocio') {
-    $where[] = 's.`Socio/Ex Socio` = ?';
+    $where[] = 's.`Socio_Ex_Socio` = ?';
     $params[] = 'Ex Socio';
 }
 
@@ -55,15 +55,15 @@ $sql = "SELECT
     s.`Id`,
     s.`Nombre`,
     s.`Nivel`,
-    s.`Socio/Ex Socio` AS Socio,
+    s.`Socio_Ex_Socio` AS Socio,
     s.`Cuota`,
-    s.`Móvil del socio` AS Movil,
-    s.`Fecha de admisión` AS Fecha_admision,
+    s.`Movil_del_socio` AS Movil,
+    s.`Fecha_de_admision` AS Fecha_admision,
     s.`Observaciones`,
     f.`Apellidos` as FamiliaApellidos,
     f.`Id` AS ID_Familia
 FROM `Socios` s
-LEFT JOIN `Familias Socios` f ON s.`IdFamilia` = f.`Id`
+LEFT JOIN `Familias_Socios` f ON s.`IdFamilia` = f.`Id`
 $whereClause
 ORDER BY s.`Nivel` ASC, s.`Nombre` ASC";
 

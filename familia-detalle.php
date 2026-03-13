@@ -9,7 +9,7 @@ if ($id <= 0) {
 }
 
 // Obtener datos de la familia
-$st = $pdo->prepare("SELECT * FROM `Familias Socios` WHERE `Id` = ?");
+$st = $pdo->prepare("SELECT * FROM `Familias_Socios` WHERE `Id` = ?");
 $st->execute([$id]);
 $familia = $st->fetch();
 
@@ -24,7 +24,7 @@ $pageTitle = 'Familia ' . ($familia['Apellidos'] ?? '');
 $st = $pdo->prepare("
     SELECT s.*, n.`Curso`
     FROM `Socios` s
-    LEFT JOIN `Niveles-Cursos` n ON n.`Nivel` = s.`Nivel`
+    LEFT JOIN `Niveles_Cursos` n ON n.`Nivel` = s.`Nivel`
     WHERE s.`IdFamilia` = ?
     ORDER BY s.`Nivel` ASC, s.`Nombre` ASC
 ");
@@ -53,7 +53,7 @@ require __DIR__ . '/includes/header.php';
                         <span class="tarfia-detail-label">Nombre completo</span>
                         <span class="tarfia-detail-value">
                             <?php 
-                            $padre = trim(($familia['Nombre padre'] ?? '') . ' ' . ($familia['Apellidos padre'] ?? ''));
+                            $padre = trim(($familia['Nombre_padre'] ?? '') . ' ' . ($familia['Apellidos_padre'] ?? ''));
                             echo htmlspecialchars($padre ?: '—');
                             ?>
                         </span>
@@ -61,8 +61,8 @@ require __DIR__ . '/includes/header.php';
                     <div class="tarfia-detail-item">
                         <span class="tarfia-detail-label">Móvil</span>
                         <span class="tarfia-detail-value">
-                            <?php if ($familia['Movil Padre']): ?>
-                                <a href="tel:<?= htmlspecialchars($familia['Movil Padre']) ?>"><?= htmlspecialchars($familia['Movil Padre']) ?></a>
+                            <?php if ($familia['Movil_Padre']): ?>
+                                <a href="tel:<?= htmlspecialchars($familia['Movil_Padre']) ?>"><?= htmlspecialchars($familia['Movil_Padre']) ?></a>
                             <?php else: ?>
                                 —
                             <?php endif; ?>
@@ -84,7 +84,7 @@ require __DIR__ . '/includes/header.php';
                         <span class="tarfia-detail-label">Nombre completo</span>
                         <span class="tarfia-detail-value">
                             <?php 
-                            $madre = trim(($familia['Nombre madre'] ?? '') . ' ' . ($familia['Apellidos madre'] ?? ''));
+                            $madre = trim(($familia['Nombre_madre'] ?? '') . ' ' . ($familia['Apellidos_madre'] ?? ''));
                             echo htmlspecialchars($madre ?: '—');
                             ?>
                         </span>
@@ -92,8 +92,8 @@ require __DIR__ . '/includes/header.php';
                     <div class="tarfia-detail-item">
                         <span class="tarfia-detail-label">Móvil</span>
                         <span class="tarfia-detail-value">
-                            <?php if ($familia['Movil Madre']): ?>
-                                <a href="tel:<?= htmlspecialchars($familia['Movil Madre']) ?>"><?= htmlspecialchars($familia['Movil Madre']) ?></a>
+                            <?php if ($familia['Movil_Madre']): ?>
+                                <a href="tel:<?= htmlspecialchars($familia['Movil_Madre']) ?>"><?= htmlspecialchars($familia['Movil_Madre']) ?></a>
                             <?php else: ?>
                                 —
                             <?php endif; ?>
@@ -114,8 +114,8 @@ require __DIR__ . '/includes/header.php';
                     <div class="tarfia-detail-item">
                         <span class="tarfia-detail-label">Teléfono fijo</span>
                         <span class="tarfia-detail-value">
-                            <?php if ($familia['Teléfono']): ?>
-                                <a href="tel:<?= htmlspecialchars($familia['Teléfono']) ?>"><?= htmlspecialchars($familia['Teléfono']) ?></a>
+                            <?php if ($familia['Telefono']): ?>
+                                <a href="tel:<?= htmlspecialchars($familia['Telefono']) ?>"><?= htmlspecialchars($familia['Telefono']) ?></a>
                             <?php else: ?>
                                 —
                             <?php endif; ?>
@@ -124,8 +124,8 @@ require __DIR__ . '/includes/header.php';
                     <div class="tarfia-detail-item">
                         <span class="tarfia-detail-label">Email</span>
                         <span class="tarfia-detail-value">
-                            <?php if ($familia['e-mail']): ?>
-                                <a href="mailto:<?= htmlspecialchars($familia['e-mail']) ?>"><?= htmlspecialchars($familia['e-mail']) ?></a>
+                            <?php if ($familia['e_mail']): ?>
+                                <a href="mailto:<?= htmlspecialchars($familia['e_mail']) ?>"><?= htmlspecialchars($familia['e_mail']) ?></a>
                             <?php else: ?>
                                 —
                             <?php endif; ?>
@@ -145,7 +145,7 @@ require __DIR__ . '/includes/header.php';
                 <div class="tarfia-detail-grid-2">
                     <div class="tarfia-detail-item">
                         <span class="tarfia-detail-label">Dirección</span>
-                        <span class="tarfia-detail-value"><?= htmlspecialchars($familia['Dirección'] ?? '—') ?></span>
+                        <span class="tarfia-detail-value"><?= htmlspecialchars($familia['Direccion'] ?? '—') ?></span>
                     </div>
                     <div class="tarfia-detail-item">
                         <span class="tarfia-detail-label">Localidad</span>
@@ -182,13 +182,13 @@ require __DIR__ . '/includes/header.php';
                             <td><?= htmlspecialchars($s['Curso'] ?? '—') ?></td>
                             <td>
                                 <?php 
-                                $estado = $s['Socio/Ex Socio'] ?? '';
+                                $estado = $s['Socio_Ex_Socio'] ?? '';
                                 $estadoClass = $estado === 'Ex Socio' ? 'tarfia-status-inactive' : 'tarfia-status-active';
                                 ?>
                                 <span class="<?= $estadoClass ?>"><?= htmlspecialchars($estado ?: '—') ?></span>
                             </td>
                             <td><?= $s['Cuota'] !== null ? number_format((float) $s['Cuota'], 2, ',', '.') . ' €' : '—' ?></td>
-                            <td><?= htmlspecialchars($s['Móvil del socio'] ?? '—') ?></td>
+                            <td><?= htmlspecialchars($s['Movil_del_socio'] ?? '—') ?></td>
                             <td>
                                 <div class="tarfia-acciones">
                                     <a href="socio-detalle.php?id=<?= (int) $s['Id'] ?>" class="tarfia-btn tarfia-btn-sm tarfia-btn-outline">Ver</a>

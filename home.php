@@ -25,14 +25,14 @@ if (is_array($cached)) {
         // Total de todos los socios (sin filtrar por estado)
         $st = $pdo->query("SELECT COUNT(*) AS n FROM `Socios`");
         $totalSocios = (int) $st->fetch()['n'];
-        $st = $pdo->query("SELECT COUNT(*) AS n FROM `Familias Socios`");
+        $st = $pdo->query("SELECT COUNT(*) AS n FROM `Familias_Socios`");
         $totalFamilias = (int) $st->fetch()['n'];
 
         // Por nivel: TODOS los socios (sin filtrar por estado)
         $st = $pdo->query("
             SELECT s.`Nivel`, n.`Curso`, COUNT(*) AS cnt
             FROM `Socios` s
-            LEFT JOIN `Niveles-Cursos` n ON n.`Nivel` = s.`Nivel`
+            LEFT JOIN `Niveles_Cursos` n ON n.`Nivel` = s.`Nivel`
             GROUP BY s.`Nivel`, n.`Curso`
             ORDER BY s.`Nivel`
         ");
@@ -48,10 +48,10 @@ if (is_array($cached)) {
 
         // Últimos socios añadidos
         $st = $pdo->query("
-            SELECT s.`Id`, s.`Nombre`, s.`IdFamilia`, s.`Nivel`, s.`Cuota`, s.`Socio/Ex Socio`, s.`Fecha de admisión`, f.`Apellidos`
+            SELECT s.`Id`, s.`Nombre`, s.`IdFamilia`, s.`Nivel`, s.`Cuota`, s.`Socio_Ex_Socio`, s.`Fecha_de_admision`, f.`Apellidos`
             FROM `Socios` s
-            LEFT JOIN `Familias Socios` f ON f.`Id` = s.`IdFamilia`
-            ORDER BY s.`Fecha de admisión` DESC, s.`Id` DESC
+            LEFT JOIN `Familias_Socios` f ON f.`Id` = s.`IdFamilia`
+            ORDER BY s.`Fecha_de_admision` DESC, s.`Id` DESC
             LIMIT 10
         ");
         $ultimosSocios = $st->fetchAll(PDO::FETCH_ASSOC);
@@ -179,7 +179,7 @@ if ($errorHome !== null):
                         <td><?= htmlspecialchars($s['Nombre'] ?? '—') ?></td>
                         <td><?= htmlspecialchars($s['Apellidos'] ?? '—') ?></td>
                         <td><?= htmlspecialchars($s['Nivel'] ?? '—') ?></td>
-                        <td><?= $s['Fecha de admisión'] ? date('d/m/Y', strtotime($s['Fecha de admisión'])) : '—' ?></td>
+                        <td><?= $s['Fecha_de_admision'] ? date('d/m/Y', strtotime($s['Fecha_de_admision'])) : '—' ?></td>
                         <td>
                             <a href="socio-detalle.php?id=<?= (int) ($s['Id'] ?? 0) ?>" class="tarfia-btn tarfia-btn-sm tarfia-btn-outline">Ver</a>
                         </td>

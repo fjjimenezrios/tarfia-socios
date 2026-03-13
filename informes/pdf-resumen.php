@@ -7,7 +7,7 @@ require_once __DIR__ . '/../includes/auth.php';
 require_once __DIR__ . '/../includes/db.php';
 
 // Obtener datos
-$niveles = $pdo->query("SELECT `Nivel`, `Curso` FROM `Niveles-Cursos` ORDER BY `Nivel`")->fetchAll(PDO::FETCH_ASSOC);
+$niveles = $pdo->query("SELECT `Nivel`, `Curso` FROM `Niveles_Cursos` ORDER BY `Nivel`")->fetchAll(PDO::FETCH_ASSOC);
 $nivelesMap = [];
 foreach ($niveles as $n) {
     $nivelesMap[(int) $n['Nivel']] = $n['Curso'];
@@ -17,10 +17,10 @@ foreach ($niveles as $n) {
 $statsPorNivel = [];
 $sql = "SELECT 
     s.`Nivel`,
-    s.`Socio/Ex Socio` AS Socio,
+    s.`Socio_Ex_Socio` AS Socio,
     COUNT(*) as total
 FROM `Socios` s
-GROUP BY s.`Nivel`, s.`Socio/Ex Socio`
+GROUP BY s.`Nivel`, s.`Socio_Ex_Socio`
 ORDER BY s.`Nivel`";
 
 foreach ($pdo->query($sql) as $row) {
@@ -48,14 +48,14 @@ foreach ($statsPorNivel as $stats) {
 }
 
 // Stats de familias
-$totalFamilias = $pdo->query("SELECT COUNT(*) FROM `Familias Socios`")->fetchColumn();
+$totalFamilias = $pdo->query("SELECT COUNT(*) FROM `Familias_Socios`")->fetchColumn();
 
 // Cuotas
 $cuotaAnual = 25;
 $familiasSocios = $pdo->query("
     SELECT COUNT(DISTINCT s.`IdFamilia`) as total
     FROM `Socios` s
-    WHERE s.`Socio/Ex Socio` = 'Socio'
+    WHERE s.`Socio_Ex_Socio` = 'Socio'
     AND s.`Nivel` BETWEEN 0 AND 8
 ")->fetchColumn();
 $ingresosMensuales = (int) $familiasSocios * $cuotaAnual;

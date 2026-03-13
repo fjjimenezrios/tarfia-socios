@@ -8,18 +8,18 @@ require_once __DIR__ . '/../includes/db.php';
 $sql = "
     SELECT 
         f.`Apellidos`,
-        f.`Nombre padre`,
-        f.`Apellidos padre`,
-        f.`Movil Padre`,
-        f.`Nombre madre`,
-        f.`Apellidos madre`,
-        f.`Movil Madre`,
-        f.`Teléfono`,
-        f.`e-mail`,
-        f.`Dirección`,
+        f.`Nombre_padre`,
+        f.`Apellidos_padre`,
+        f.`Movil_Padre`,
+        f.`Nombre_madre`,
+        f.`Apellidos_madre`,
+        f.`Movil_Madre`,
+        f.`Telefono`,
+        f.`e_mail`,
+        f.`Direccion`,
         f.`Localidad`,
         (SELECT COUNT(*) FROM `Socios` s WHERE s.`IdFamilia` = f.`Id`) AS NumSocios
-    FROM `Familias Socios` f
+    FROM `Familias_Socios` f
     ORDER BY f.`Apellidos` ASC
 ";
 
@@ -46,15 +46,15 @@ fputcsv($output, [
 foreach ($rows as $row) {
     fputcsv($output, [
         $row['Apellidos'] ?? '',
-        $row['Nombre padre'] ?? '',
-        $row['Apellidos padre'] ?? '',
-        $row['Movil Padre'] ?? '',
-        $row['Nombre madre'] ?? '',
-        $row['Apellidos madre'] ?? '',
-        $row['Movil Madre'] ?? '',
-        $row['Teléfono'] ?? '',
-        $row['e-mail'] ?? '',
-        $row['Dirección'] ?? '',
+        $row['Nombre_padre'] ?? '',
+        $row['Apellidos_padre'] ?? '',
+        $row['Movil_Padre'] ?? '',
+        $row['Nombre_madre'] ?? '',
+        $row['Apellidos_madre'] ?? '',
+        $row['Movil_Madre'] ?? '',
+        $row['Telefono'] ?? '',
+        $row['e_mail'] ?? '',
+        $row['Direccion'] ?? '',
         $row['Localidad'] ?? '',
         $row['NumSocios'] ?? 0,
     ], ';');

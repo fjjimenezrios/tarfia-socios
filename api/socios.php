@@ -25,7 +25,7 @@ $orderCol = isset($_GET['order'][0]['column']) ? (int) $_GET['order'][0]['column
 $orderDir = isset($_GET['order'][0]['dir']) && strtolower($_GET['order'][0]['dir']) === 'desc' ? 'DESC' : 'ASC';
 
 // Columna 0 es el número de fila (no ordenable en servidor)
-$columns = [null, 's.`Nombre`', 'f.`Apellidos`', 's.`Nivel`', 's.`Cuota`', 's.`Socio/Ex Socio`', 's.`Móvil del socio`', 's.`Fecha de admisión`'];
+$columns = [null, 's.`Nombre`', 'f.`Apellidos`', 's.`Nivel`', 's.`Cuota`', 's.`Socio_Ex_Socio`', 's.`Movil_del_socio`', 's.`Fecha_de_admision`'];
 $orderColumn = isset($columns[$orderCol]) && $columns[$orderCol] !== null ? $columns[$orderCol] : 's.`Nombre`';
 
 $where = [];
@@ -63,15 +63,15 @@ if (!empty($colFilters['4'])) { // Cuota
     $params[] = '%' . $colFilters['4'] . '%';
 }
 if (!empty($colFilters['5'])) { // Estado (búsqueda exacta, case insensitive)
-    $where[] = "LOWER(TRIM(COALESCE(s.`Socio/Ex Socio`, ''))) = LOWER(?)";
+    $where[] = "LOWER(TRIM(COALESCE(s.`Socio_Ex_Socio`, ''))) = LOWER(?)";
     $params[] = trim($colFilters['5']);
 }
 if (!empty($colFilters['6'])) { // Móvil
-    $where[] = "s.`Móvil del socio` LIKE ?";
+    $where[] = "s.`Movil_del_socio` LIKE ?";
     $params[] = '%' . $colFilters['6'] . '%';
 }
 if (!empty($colFilters['7'])) { // Fecha
-    $where[] = "s.`Fecha de admisión` LIKE ?";
+    $where[] = "s.`Fecha_de_admision` LIKE ?";
     $params[] = '%' . $colFilters['7'] . '%';
 }
 
@@ -103,15 +103,20 @@ if ($totalAll === null) {
     cache_set('socios_total', $totalAll, 30);
 }
 
-// Usar SQL_CALC_FOUND_ROWS para obtener el total filtrado en una sola query
+// Contar total filtrado con query separada (SQLite no tiene FOUND_ROWS)
+$sqlCount = "SELECT COUNT(*) FROM `Socios` s LEFT JOIN `Familias_Socios` f ON f.`Id` = s.`IdFamilia` LEFT JOIN `Niveles_Cursos` n ON n.`Nivel` = s.`Nivel` $sqlWhere";
+$stCount = $pdo->prepare($sqlCount);
+$stCount->execute($params);
+$totalFiltered = (int) $stCount->fetchColumn();
+
 $sql = "
-    SELECT SQL_CALC_FOUND_ROWS 
-        s.`Id`, s.`Nombre`, s.`IdFamilia`, f.`Apellidos` AS familia, 
-        s.`Nivel`, n.`Curso`, s.`Cuota`, s.`Socio/Ex Socio` AS estado, 
-        s.`Móvil del socio` AS movil, s.`Fecha de admisión` AS fecha_admision
+    SELECT
+        s.`Id`, s.`Nombre`, s.`IdFamilia`, f.`Apellidos` AS familia,
+        s.`Nivel`, n.`Curso`, s.`Cuota`, s.`Socio_Ex_Socio` AS estado,
+        s.`Movil_del_socio` AS movil, s.`Fecha_de_admision` AS fecha_admision
     FROM `Socios` s
-    LEFT JOIN `Familias Socios` f ON f.`Id` = s.`IdFamilia`
-    LEFT JOIN `Niveles-Cursos` n ON n.`Nivel` = s.`Nivel`
+    LEFT JOIN `Familias_Socios` f ON f.`Id` = s.`IdFamilia`
+    LEFT JOIN `Niveles_Cursos` n ON n.`Nivel` = s.`Nivel`
     $sqlWhere
     $sqlOrder
     LIMIT $length OFFSET $start
@@ -119,9 +124,6 @@ $sql = "
 $st = $pdo->prepare($sql);
 $st->execute($params);
 $rows = $st->fetchAll(PDO::FETCH_ASSOC);
-
-// Obtener total filtrado (usando FOUND_ROWS - más rápido que COUNT separado)
-$totalFiltered = (int) $pdo->query("SELECT FOUND_ROWS()")->fetchColumn();
 
 $data = [];
 $rowNum = $start;

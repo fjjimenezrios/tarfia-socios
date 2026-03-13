@@ -12,14 +12,34 @@ $baseUrl = rtrim($baseUrl, '/') . '/';
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#1a2744">
+    <meta name="description" content="Base de datos de socios y familias de Tarfía">
+    <!-- Open Graph / WhatsApp / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="TarfíaDB">
+    <meta property="og:description" content="Base de datos de socios y familias de Tarfía">
+    <meta property="og:image" content="<?= (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'] . $baseUrl ?>assets/img/og-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:url" content="<?= (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] ?>">
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="TarfíaDB">
+    <meta name="twitter:description" content="Base de datos de socios y familias de Tarfía">
+    <meta name="twitter:image" content="<?= (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'] . $baseUrl ?>assets/img/og-image.png">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="default">
-    <meta name="apple-mobile-web-app-title" content="Tarfia">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="TarfíaDB">
+    <meta name="application-name" content="TarfíaDB">
+    <meta name="msapplication-TileColor" content="#1a2744">
     <link rel="manifest" href="<?= $baseUrl ?>manifest.json">
-    <link rel="icon" type="image/svg+xml" href="<?= $baseUrl ?>assets/img/escudo-tarfia.svg">
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="<?= $baseUrl ?>favicon.ico">
     <link rel="icon" type="image/png" sizes="192x192" href="<?= $baseUrl ?>assets/img/icon-192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="<?= $baseUrl ?>assets/img/icon-512.png">
+    <!-- Apple Touch Icon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="<?= $baseUrl ?>assets/img/apple-touch-icon.png">
     <link rel="apple-touch-icon" sizes="192x192" href="<?= $baseUrl ?>assets/img/icon-192.png">
-    <title><?= isset($pageTitle) ? htmlspecialchars($pageTitle) . ' — ' : '' ?>Tarfia Socios</title>
+    <title>TarfíaDB</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">

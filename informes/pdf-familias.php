@@ -19,16 +19,16 @@ if (!in_array('apellidos', $columnas)) {
 $sql = "SELECT 
     f.`Id`,
     f.`Apellidos`,
-    f.`Nombre padre` AS Padre,
-    f.`Nombre madre` AS Madre,
-    f.`Dirección` AS Direccion,
+    f.`Nombre_padre` AS Padre,
+    f.`Nombre_madre` AS Madre,
+    f.`Direccion`,
     f.`Localidad`,
-    f.`Teléfono` AS Telefono,
-    f.`Movil Padre` AS MovilPadre,
-    f.`Movil Madre` AS MovilMadre,
-    f.`e-mail` AS E_mail,
+    f.`Telefono`,
+    f.`Movil_Padre` AS MovilPadre,
+    f.`Movil_Madre` AS MovilMadre,
+    f.`e_mail` AS E_mail,
     (SELECT COUNT(*) FROM `Socios` s WHERE s.`IdFamilia` = f.`Id`) as NumSocios
-FROM `Familias Socios` f
+FROM `Familias_Socios` f
 ORDER BY f.`Apellidos` ASC";
 
 $familias = $pdo->query($sql)->fetchAll(PDO::FETCH_ASSOC);

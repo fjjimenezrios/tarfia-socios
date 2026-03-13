@@ -6,7 +6,7 @@ require_once __DIR__ . '/../includes/auth.php';
 require_once __DIR__ . '/../includes/db.php';
 
 // Obtener opciones para filtros
-$niveles = $pdo->query("SELECT `Nivel`, `Curso` FROM `Niveles-Cursos` ORDER BY `Nivel`")->fetchAll(PDO::FETCH_ASSOC);
+$niveles = $pdo->query("SELECT `Nivel`, `Curso` FROM `Niveles_Cursos` ORDER BY `Nivel`")->fetchAll(PDO::FETCH_ASSOC);
 $estados = ['', 'Socio', 'Ex Socio'];
 
 // Procesar el formulario

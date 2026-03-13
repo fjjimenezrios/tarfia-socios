@@ -11,19 +11,19 @@ if (!is_array($stats)) {
     $stats = [];
     
     // Total socios activos
-    $st = $pdo->query("SELECT COUNT(*) AS n FROM `Socios` WHERE LOWER(TRIM(COALESCE(`Socio/Ex Socio`, ''))) != 'ex socio'");
+    $st = $pdo->query("SELECT COUNT(*) AS n FROM `Socios` WHERE LOWER(TRIM(COALESCE(`Socio_Ex_Socio`, ''))) != 'ex socio'");
     $stats['socios_activos'] = (int) $st->fetch()['n'];
     
     // Total familias
-    $st = $pdo->query("SELECT COUNT(*) AS n FROM `Familias Socios`");
+    $st = $pdo->query("SELECT COUNT(*) AS n FROM `Familias_Socios`");
     $stats['familias'] = (int) $st->fetch()['n'];
-    
+
     // Familias con dirección (para etiquetas)
-    $st = $pdo->query("SELECT COUNT(*) AS n FROM `Familias Socios` WHERE `Dirección` IS NOT NULL AND `Dirección` != ''");
+    $st = $pdo->query("SELECT COUNT(*) AS n FROM `Familias_Socios` WHERE `Direccion` IS NOT NULL AND `Direccion` != ''");
     $stats['familias_con_direccion'] = (int) $st->fetch()['n'];
     
     // Niveles disponibles
-    $st = $pdo->query("SELECT COUNT(*) AS n FROM `Niveles-Cursos`");
+    $st = $pdo->query("SELECT COUNT(*) AS n FROM `Niveles_Cursos`");
     $stats['niveles'] = (int) $st->fetch()['n'];
     
     cache_set('informes_stats', $stats, 300); // 5 min

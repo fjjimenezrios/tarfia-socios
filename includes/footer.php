@@ -1,7 +1,7 @@
     </div>
 </main>
 <footer class="tarfia-footer">
-    <div class="container">Tarfia Socios</div>
+    <div class="container">TarfíaDB</div>
 </footer>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <script src="//cdn.datatables.net/2.3.7/js/dataTables.min.js"></script>

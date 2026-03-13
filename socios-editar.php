@@ -24,12 +24,12 @@ if (!$socio) {
 // Listas para dropdowns
 $familias = cache_get('familias_list');
 if (!is_array($familias)) {
-    $familias = $pdo->query("SELECT `Id`, `Apellidos` FROM `Familias Socios` ORDER BY `Apellidos`")->fetchAll(PDO::FETCH_ASSOC);
+    $familias = $pdo->query("SELECT `Id`, `Apellidos` FROM `Familias_Socios` ORDER BY `Apellidos`")->fetchAll(PDO::FETCH_ASSOC);
     cache_set('familias_list', $familias, CACHE_TTL_LISTS);
 }
 $niveles = cache_get('niveles_list');
 if (!is_array($niveles)) {
-    $niveles = $pdo->query("SELECT `Nivel`, `Curso` FROM `Niveles-Cursos` ORDER BY `Nivel`")->fetchAll(PDO::FETCH_ASSOC);
+    $niveles = $pdo->query("SELECT `Nivel`, `Curso` FROM `Niveles_Cursos` ORDER BY `Nivel`")->fetchAll(PDO::FETCH_ASSOC);
     cache_set('niveles_list', $niveles, CACHE_TTL_LISTS);
 }
 
@@ -62,14 +62,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $error = 'La fecha de admisión es obligatoria.';
     } else {
         try {
-            $sql = "UPDATE `Socios` SET 
-                `Nombre` = ?, 
-                `IdFamilia` = ?, 
-                `Nivel` = ?, 
-                `Cuota` = ?, 
-                `Socio/Ex Socio` = ?, 
-                `Móvil del socio` = ?, 
-                `Fecha de admisión` = ?, 
+            $sql = "UPDATE `Socios` SET
+                `Nombre` = ?,
+                `IdFamilia` = ?,
+                `Nivel` = ?,
+                `Cuota` = ?,
+                `Socio_Ex_Socio` = ?,
+                `Movil_del_socio` = ?,
+                `Fecha_de_admision` = ?,
                 `Observaciones` = ?
                 WHERE `Id` = ?";
             $st = $pdo->prepare($sql);
@@ -150,20 +150,20 @@ require __DIR__ . '/includes/breadcrumbs.php';
                 <div class="col-md-4">
                     <label for="estado" class="tarfia-form-label">Estado <span style="color:var(--tarfia-danger)">*</span></label>
                     <select class="tarfia-select" id="estado" name="estado" required>
-                        <option value="Socio" <?= ($socio['Socio/Ex Socio'] ?? '') === 'Socio' ? 'selected' : '' ?>>Socio</option>
-                        <option value="Ex Socio" <?= ($socio['Socio/Ex Socio'] ?? '') === 'Ex Socio' ? 'selected' : '' ?>>Ex Socio</option>
+                        <option value="Socio" <?= ($socio['Socio_Ex_Socio'] ?? '') === 'Socio' ? 'selected' : '' ?>>Socio</option>
+                        <option value="Ex Socio" <?= ($socio['Socio_Ex_Socio'] ?? '') === 'Ex Socio' ? 'selected' : '' ?>>Ex Socio</option>
                     </select>
                 </div>
                 <div class="col-md-6">
                     <label for="movil" class="tarfia-form-label">Móvil <span style="color:var(--tarfia-danger)">*</span></label>
-                    <input type="tel" class="tarfia-input" id="movil" name="movil" required value="<?= htmlspecialchars($socio['Móvil del socio'] ?? '') ?>">
+                    <input type="tel" class="tarfia-input" id="movil" name="movil" required value="<?= htmlspecialchars($socio['Movil_del_socio'] ?? '') ?>">
                 </div>
                 <div class="col-md-6">
                     <label for="fecha_admision" class="tarfia-form-label">Fecha de admisión <span style="color:var(--tarfia-danger)">*</span></label>
                     <?php 
                     $fechaAdmision = '';
-                    if (!empty($socio['Fecha de admisión'])) {
-                        $ts = strtotime($socio['Fecha de admisión']);
+                    if (!empty($socio['Fecha_de_admision'])) {
+                        $ts = strtotime($socio['Fecha_de_admision']);
                         if ($ts !== false) {
                             $fechaAdmision = date('Y-m-d', $ts);
                         }
@@ -179,7 +179,7 @@ require __DIR__ . '/includes/breadcrumbs.php';
                     <button type="submit" class="tarfia-btn tarfia-btn-primary">Guardar cambios</button>
                     <a href="socios.php" class="tarfia-btn tarfia-btn-outline">Volver al listado</a>
                     <a href="socio-detalle.php?id=<?= $id ?>" class="tarfia-btn tarfia-btn-outline">Ver ficha</a>
-                    <?php if (($socio['Socio/Ex Socio'] ?? '') !== 'Ex Socio'): ?>
+                    <?php if (($socio['Socio_Ex_Socio'] ?? '') !== 'Ex Socio'): ?>
                     <button type="button" class="tarfia-btn tarfia-btn-danger" id="btnDarBaja">Dar de baja</button>
                     <?php endif; ?>
                 </div>

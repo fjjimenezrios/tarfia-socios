@@ -23,7 +23,7 @@ $orderCol = isset($_GET['order'][0]['column']) ? (int) $_GET['order'][0]['column
 $orderDir = isset($_GET['order'][0]['dir']) && strtolower($_GET['order'][0]['dir']) === 'desc' ? 'DESC' : 'ASC';
 
 // Columna 0 es el número de fila (no ordenable en servidor)
-$columns = [null, '`Apellidos`', '`Nombre padre`', '`Nombre madre`', '`Localidad`', '`Teléfono`', '`e-mail`'];
+$columns = [null, '`Apellidos`', '`Nombre_padre`', '`Nombre_madre`', '`Localidad`', '`Telefono`', '`e_mail`'];
 $orderColumn = isset($columns[$orderCol]) && $columns[$orderCol] !== null ? $columns[$orderCol] : '`Apellidos`';
 
 $where = [];
@@ -31,7 +31,7 @@ $params = [];
 
 // Búsqueda global
 if ($search !== '') {
-    $where[] = "(`Apellidos` LIKE ? OR `Nombre padre` LIKE ? OR `Nombre madre` LIKE ? OR `Localidad` LIKE ? OR `e-mail` LIKE ?)";
+    $where[] = "(`Apellidos` LIKE ? OR `Nombre_padre` LIKE ? OR `Nombre_madre` LIKE ? OR `Localidad` LIKE ? OR `e_mail` LIKE ?)";
     $params[] = '%' . $search . '%';
     $params[] = '%' . $search . '%';
     $params[] = '%' . $search . '%';
@@ -45,11 +45,11 @@ if (!empty($colFilters['1'])) { // Apellidos
     $params[] = '%' . $colFilters['1'] . '%';
 }
 if (!empty($colFilters['2'])) { // Padre
-    $where[] = "CONCAT(COALESCE(`Nombre padre`, ''), ' ', COALESCE(`Apellidos padre`, '')) LIKE ?";
+    $where[] = "(COALESCE(`Nombre_padre`, '') || ' ' || COALESCE(`Apellidos_padre`, '')) LIKE ?";
     $params[] = '%' . $colFilters['2'] . '%';
 }
 if (!empty($colFilters['3'])) { // Madre
-    $where[] = "CONCAT(COALESCE(`Nombre madre`, ''), ' ', COALESCE(`Apellidos madre`, '')) LIKE ?";
+    $where[] = "(COALESCE(`Nombre_madre`, '') || ' ' || COALESCE(`Apellidos_madre`, '')) LIKE ?";
     $params[] = '%' . $colFilters['3'] . '%';
 }
 if (!empty($colFilters['4'])) { // Localidad
@@ -57,16 +57,16 @@ if (!empty($colFilters['4'])) { // Localidad
     $params[] = '%' . $colFilters['4'] . '%';
 }
 if (!empty($colFilters['5'])) { // Teléfono
-    $where[] = "`Teléfono` LIKE ?";
+    $where[] = "`Telefono` LIKE ?";
     $params[] = '%' . $colFilters['5'] . '%';
 }
 if (!empty($colFilters['6'])) { // Móviles
-    $where[] = "(COALESCE(`Movil Padre`, '') LIKE ? OR COALESCE(`Movil Madre`, '') LIKE ?)";
+    $where[] = "(COALESCE(`Movil_Padre`, '') LIKE ? OR COALESCE(`Movil_Madre`, '') LIKE ?)";
     $params[] = '%' . $colFilters['6'] . '%';
     $params[] = '%' . $colFilters['6'] . '%';
 }
 if (!empty($colFilters['7'])) { // Email
-    $where[] = "`e-mail` LIKE ?";
+    $where[] = "`e_mail` LIKE ?";
     $params[] = '%' . $colFilters['7'] . '%';
 }
 
@@ -75,18 +75,23 @@ $sqlWhere = $where ? 'WHERE ' . implode(' AND ', $where) : '';
 // Total sin filtro (cacheado 30 segundos)
 $totalAll = cache_get('familias_total');
 if ($totalAll === null) {
-    $totalAll = (int) $pdo->query("SELECT COUNT(*) FROM `Familias Socios`")->fetchColumn();
+    $totalAll = (int) $pdo->query("SELECT COUNT(*) FROM `Familias_Socios`")->fetchColumn();
     cache_set('familias_total', $totalAll, 30);
 }
 
-// Datos con SQL_CALC_FOUND_ROWS y conteo de socios en subquery (todo en una sola query)
+// Contar total filtrado con query separada (SQLite no tiene FOUND_ROWS)
+$sqlCount = "SELECT COUNT(*) FROM `Familias_Socios` f $sqlWhere";
+$stCount = $pdo->prepare($sqlCount);
+$stCount->execute($params);
+$totalFiltered = (int) $stCount->fetchColumn();
+
 $sql = "
-    SELECT SQL_CALC_FOUND_ROWS 
-        f.`Id`, f.`Apellidos`, f.`Nombre padre`, f.`Apellidos padre`, 
-        f.`Nombre madre`, f.`Apellidos madre`, f.`Localidad`, f.`Teléfono`, 
-        f.`Movil Madre`, f.`Movil Padre`, f.`e-mail`,
+    SELECT
+        f.`Id`, f.`Apellidos`, f.`Nombre_padre`, f.`Apellidos_padre`,
+        f.`Nombre_madre`, f.`Apellidos_madre`, f.`Localidad`, f.`Telefono`,
+        f.`Movil_Madre`, f.`Movil_Padre`, f.`e_mail`,
         (SELECT COUNT(*) FROM `Socios` s WHERE s.`IdFamilia` = f.`Id`) AS num_socios
-    FROM `Familias Socios` f
+    FROM `Familias_Socios` f
     $sqlWhere
     ORDER BY $orderColumn $orderDir
     LIMIT $length OFFSET $start
@@ -95,16 +100,13 @@ $st = $pdo->prepare($sql);
 $st->execute($params);
 $rows = $st->fetchAll(PDO::FETCH_ASSOC);
 
-// Total filtrado (usando FOUND_ROWS)
-$totalFiltered = (int) $pdo->query("SELECT FOUND_ROWS()")->fetchColumn();
-
 $data = [];
 $rowNum = $start;
 foreach ($rows as $r) {
     $rowNum++;
-    $padre = trim(($r['Nombre padre'] ?? '') . ' ' . ($r['Apellidos padre'] ?? ''));
-    $madre = trim(($r['Nombre madre'] ?? '') . ' ' . ($r['Apellidos madre'] ?? ''));
-    $moviles = trim(($r['Movil Padre'] ?? '') . ' / ' . ($r['Movil Madre'] ?? ''), ' /');
+    $padre = trim(($r['Nombre_padre'] ?? '') . ' ' . ($r['Apellidos_padre'] ?? ''));
+    $madre = trim(($r['Nombre_madre'] ?? '') . ' ' . ($r['Apellidos_madre'] ?? ''));
+    $moviles = trim(($r['Movil_Padre'] ?? '') . ' / ' . ($r['Movil_Madre'] ?? ''), ' /');
     $numSocios = (int) ($r['num_socios'] ?? 0);
     $sociosBadge = '<span class="tarfia-badge">' . $numSocios . '</span>';
     $acciones = '<div class="tarfia-acciones">'
@@ -118,9 +120,9 @@ foreach ($rows as $r) {
         htmlspecialchars($padre ?: '—'),
         htmlspecialchars($madre ?: '—'),
         htmlspecialchars($r['Localidad'] ?? '—'),
-        htmlspecialchars($r['Teléfono'] ?? '—'),
+        htmlspecialchars($r['Telefono'] ?? '—'),
         htmlspecialchars($moviles ?: '—'),
-        htmlspecialchars($r['e-mail'] ?? '—'),
+        htmlspecialchars($r['e_mail'] ?? '—'),
         $sociosBadge,
         $acciones,
     ];

@@ -12,9 +12,9 @@ try {
 $pageTitle = 'Cuotas';
 $errorCuotas = null;
 
-// Usar caché para cuotas (60 segundos)
-$cached = cache_get('cuotas_data');
-if (is_array($cached)) {
+// Desactivar caché temporalmente para depuración
+$cached = false; // cache_get('cuotas_data');
+if (false && is_array($cached)) {
     $numFamiliasPagan = $cached['numFamiliasPagan'];
     $totalMensual = $cached['totalMensual'];
     $totalAnual = $cached['totalAnual'];
@@ -22,9 +22,9 @@ if (is_array($cached)) {
     $familiasPagan = $cached['familiasPagan'];
 } else {
     try {
-        // Condición optimizada usando índice
-        $condSocio = "`Socio/Ex Socio` != 'Ex Socio'";
-        $condSocioJoin = "s.`Socio/Ex Socio` != 'Ex Socio'";
+        // Condición: incluir TODOS excepto "Ex Socio" (comparación flexible)
+        $condSocio = "TRIM(COALESCE(`Socio_Ex_Socio`, '')) NOT LIKE '%Ex Socio%'";
+        $condSocioJoin = "TRIM(COALESCE(s.`Socio_Ex_Socio`, '')) NOT LIKE '%Ex Socio%'";
         
         // Niveles que pagan: 4EPO (0) a 2BACH (8)
         $nivelesQuePagan = [0, 1, 2, 3, 4, 5, 6, 7, 8];
@@ -38,7 +38,7 @@ if (is_array($cached)) {
                 COUNT(DISTINCT s.`IdFamilia`) AS num_familias,
                 SUM(fam_cuota.cuota) AS total_nivel
             FROM `Socios` s
-            INNER JOIN `Niveles-Cursos` n ON n.`Nivel` = s.`Nivel`
+            INNER JOIN `Niveles_Cursos` n ON n.`Nivel` = s.`Nivel`
             INNER JOIN (
                 SELECT `IdFamilia`, MAX(`Cuota`) AS cuota
                 FROM `Socios`
@@ -77,11 +77,11 @@ if (is_array($cached)) {
                 f.`Id`,
                 f.`Apellidos`,
                 MAX(s.`Cuota`) AS cuota,
-                GROUP_CONCAT(DISTINCT s.`Nombre` ORDER BY s.`Nombre` SEPARATOR ', ') AS socios,
-                GROUP_CONCAT(DISTINCT n.`Curso` ORDER BY s.`Nivel` SEPARATOR ', ') AS niveles
-            FROM `Familias Socios` f
+                GROUP_CONCAT(s.`Nombre`, ', ') AS socios,
+                GROUP_CONCAT(n.`Curso`, ', ') AS niveles
+            FROM `Familias_Socios` f
             INNER JOIN `Socios` s ON s.`IdFamilia` = f.`Id`
-            INNER JOIN `Niveles-Cursos` n ON n.`Nivel` = s.`Nivel`
+            INNER JOIN `Niveles_Cursos` n ON n.`Nivel` = s.`Nivel`
             WHERE $condSocioJoin AND s.`Nivel` IN ($placeholders)
             GROUP BY f.`Id`, f.`Apellidos`
             ORDER BY f.`Apellidos`

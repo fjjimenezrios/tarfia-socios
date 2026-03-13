@@ -12,9 +12,9 @@ $sql = "
         n.`Nivel`,
         n.`Curso`,
         COUNT(s.`Id`) AS Total,
-        SUM(CASE WHEN s.`Socio/Ex Socio` = 'Socio' THEN 1 ELSE 0 END) AS Activos,
-        SUM(CASE WHEN s.`Socio/Ex Socio` = 'Ex Socio' THEN 1 ELSE 0 END) AS ExSocios
-    FROM `Niveles-Cursos` n
+        SUM(CASE WHEN s.`Socio_Ex_Socio` = 'Socio' THEN 1 ELSE 0 END) AS Activos,
+        SUM(CASE WHEN s.`Socio_Ex_Socio` = 'Ex Socio' THEN 1 ELSE 0 END) AS ExSocios
+    FROM `Niveles_Cursos` n
     LEFT JOIN `Socios` s ON s.`Nivel` = n.`Nivel`
     GROUP BY n.`Nivel`, n.`Curso`
     ORDER BY n.`Nivel` ASC
@@ -36,9 +36,9 @@ $detallePorNivel = [];
 $stDetalle = $pdo->query("
     SELECT s.`Nombre`, s.`Nivel`, n.`Curso`, f.`Apellidos` AS Familia
     FROM `Socios` s
-    LEFT JOIN `Familias Socios` f ON f.`Id` = s.`IdFamilia`
-    LEFT JOIN `Niveles-Cursos` n ON n.`Nivel` = s.`Nivel`
-    WHERE s.`Socio/Ex Socio` = 'Socio'
+    LEFT JOIN `Familias_Socios` f ON f.`Id` = s.`IdFamilia`
+    LEFT JOIN `Niveles_Cursos` n ON n.`Nivel` = s.`Nivel`
+    WHERE s.`Socio_Ex_Socio` = 'Socio'
     ORDER BY s.`Nivel` ASC, f.`Apellidos` ASC, s.`Nombre` ASC
 ");
 foreach ($stDetalle->fetchAll(PDO::FETCH_ASSOC) as $row) {

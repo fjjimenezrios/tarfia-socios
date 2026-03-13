@@ -13,8 +13,8 @@ if ($id <= 0) {
 $st = $pdo->prepare("
     SELECT s.*, f.`Apellidos` AS familia_apellidos, f.`Id` AS familia_id, n.`Curso`
     FROM `Socios` s
-    LEFT JOIN `Familias Socios` f ON f.`Id` = s.`IdFamilia`
-    LEFT JOIN `Niveles-Cursos` n ON n.`Nivel` = s.`Nivel`
+    LEFT JOIN `Familias_Socios` f ON f.`Id` = s.`IdFamilia`
+    LEFT JOIN `Niveles_Cursos` n ON n.`Nivel` = s.`Nivel`
     WHERE s.`Id` = ?
 ");
 $st->execute([$id]);
@@ -37,9 +37,9 @@ $breadcrumbs = [
 $hermanos = [];
 if ($socio['IdFamilia']) {
     $st = $pdo->prepare("
-        SELECT s.`Id`, s.`Nombre`, n.`Curso`, s.`Socio/Ex Socio` AS estado
+        SELECT s.`Id`, s.`Nombre`, n.`Curso`, s.`Socio_Ex_Socio` AS estado
         FROM `Socios` s
-        LEFT JOIN `Niveles-Cursos` n ON n.`Nivel` = s.`Nivel`
+        LEFT JOIN `Niveles_Cursos` n ON n.`Nivel` = s.`Nivel`
         WHERE s.`IdFamilia` = ? AND s.`Id` != ?
         ORDER BY s.`Nivel` ASC
     ");
@@ -73,7 +73,7 @@ require __DIR__ . '/includes/breadcrumbs.php';
                         <span class="tarfia-detail-label">Estado</span>
                         <span class="tarfia-detail-value">
                             <?php 
-                            $estado = $socio['Socio/Ex Socio'] ?? '';
+                            $estado = $socio['Socio_Ex_Socio'] ?? '';
                             $estadoClass = $estado === 'Ex Socio' ? 'tarfia-status-inactive' : 'tarfia-status-active';
                             ?>
                             <span class="<?= $estadoClass ?>"><?= htmlspecialchars($estado ?: 'Sin especificar') ?></span>
@@ -89,11 +89,11 @@ require __DIR__ . '/includes/breadcrumbs.php';
                     </div>
                     <div class="tarfia-detail-item">
                         <span class="tarfia-detail-label">Móvil</span>
-                        <span class="tarfia-detail-value"><?= htmlspecialchars($socio['Móvil del socio'] ?? '—') ?></span>
+                        <span class="tarfia-detail-value"><?= htmlspecialchars($socio['Movil_del_socio'] ?? '—') ?></span>
                     </div>
                     <div class="tarfia-detail-item">
                         <span class="tarfia-detail-label">Fecha de admisión</span>
-                        <span class="tarfia-detail-value"><?= $socio['Fecha de admisión'] ? date('d/m/Y', strtotime($socio['Fecha de admisión'])) : '—' ?></span>
+                        <span class="tarfia-detail-value"><?= $socio['Fecha_de_admision'] ? date('d/m/Y', strtotime($socio['Fecha_de_admision'])) : '—' ?></span>
                     </div>
                     <div class="tarfia-detail-item">
                         <span class="tarfia-detail-label">Familia</span>

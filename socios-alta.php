@@ -6,12 +6,12 @@ require_once __DIR__ . '/includes/cache.php';
 $pageTitle = 'Alta de socio';
 $familias = cache_get('familias_list');
 if (!is_array($familias)) {
-    $familias = $pdo->query("SELECT `Id`, `Apellidos` FROM `Familias Socios` ORDER BY `Apellidos`")->fetchAll(PDO::FETCH_ASSOC);
+    $familias = $pdo->query("SELECT `Id`, `Apellidos` FROM `Familias_Socios` ORDER BY `Apellidos`")->fetchAll(PDO::FETCH_ASSOC);
     cache_set('familias_list', $familias, CACHE_TTL_LISTS);
 }
 $niveles = cache_get('niveles_list');
 if (!is_array($niveles)) {
-    $niveles = $pdo->query("SELECT `Nivel`, `Curso` FROM `Niveles-Cursos` ORDER BY `Nivel`")->fetchAll(PDO::FETCH_ASSOC);
+    $niveles = $pdo->query("SELECT `Nivel`, `Curso` FROM `Niveles_Cursos` ORDER BY `Nivel`")->fetchAll(PDO::FETCH_ASSOC);
     cache_set('niveles_list', $niveles, CACHE_TTL_LISTS);
 }
 
@@ -45,7 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } else {
         try {
             $sql = "INSERT INTO `Socios` (
-                `Nombre`, `IdFamilia`, `Nivel`, `Cuota`, `Socio/Ex Socio`, `Móvil del socio`, `Fecha de admisión`, `Observaciones`
+                `Nombre`, `IdFamilia`, `Nivel`, `Cuota`, `Socio_Ex_Socio`, `Movil_del_socio`, `Fecha_de_admision`, `Observaciones`
             ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
             $st = $pdo->prepare($sql);
             $st->execute([

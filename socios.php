@@ -8,12 +8,12 @@ $pageTitle = 'Socios';
 // Dropdowns: cache 5 min
 $familias = cache_get('familias_list');
 if (!is_array($familias)) {
-    $familias = $pdo->query("SELECT `Id`, `Apellidos` FROM `Familias Socios` ORDER BY `Apellidos`")->fetchAll(PDO::FETCH_ASSOC);
+    $familias = $pdo->query("SELECT `Id`, `Apellidos` FROM `Familias_Socios` ORDER BY `Apellidos`")->fetchAll(PDO::FETCH_ASSOC);
     cache_set('familias_list', $familias, CACHE_TTL_LISTS);
 }
 $niveles = cache_get('niveles_list');
 if (!is_array($niveles)) {
-    $niveles = $pdo->query("SELECT `Nivel`, `Curso` FROM `Niveles-Cursos` ORDER BY `Nivel`")->fetchAll(PDO::FETCH_ASSOC);
+    $niveles = $pdo->query("SELECT `Nivel`, `Curso` FROM `Niveles_Cursos` ORDER BY `Nivel`")->fetchAll(PDO::FETCH_ASSOC);
     cache_set('niveles_list', $niveles, CACHE_TTL_LISTS);
 }
 

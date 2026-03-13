@@ -26,7 +26,7 @@ if ($id <= 0) {
 
 try {
     // Verificar que el socio existe
-    $st = $pdo->prepare("SELECT `Id`, `Socio/Ex Socio` FROM `Socios` WHERE `Id` = ?");
+    $st = $pdo->prepare("SELECT `Id`, `Socio_Ex_Socio` FROM `Socios` WHERE `Id` = ?");
     $st->execute([$id]);
     $socio = $st->fetch();
     
@@ -36,14 +36,14 @@ try {
         exit;
     }
     
-    if (($socio['Socio/Ex Socio'] ?? '') === 'Ex Socio') {
+    if (($socio['Socio_Ex_Socio'] ?? '') === 'Ex Socio') {
         $response['message'] = 'Este socio ya está dado de baja';
         echo json_encode($response);
         exit;
     }
     
     // Dar de baja: cambiar estado a Ex Socio y registrar fecha
-    $sql = "UPDATE `Socios` SET `Socio/Ex Socio` = 'Ex Socio' WHERE `Id` = ?";
+    $sql = "UPDATE `Socios` SET `Socio_Ex_Socio` = 'Ex Socio' WHERE `Id` = ?";
     $st = $pdo->prepare($sql);
     $st->execute([$id]);
     
