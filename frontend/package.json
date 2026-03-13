@@ -1,0 +1,23 @@
+{
+  "name": "tarfia-socios-frontend",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "lint": "eslint ."
+  },
+  "dependencies": {
+    "@nuxt/ui": "^2.18.4",
+    "@pinia/nuxt": "^0.5.5",
+    "nuxt": "^3.13.2",
+    "pinia": "^2.2.6",
+    "vue": "^3.5.12"
+  },
+  "devDependencies": {
+    "@nuxt/eslint-config": "^0.5.7",
+    "eslint": "^9.13.0"
+  }
+}

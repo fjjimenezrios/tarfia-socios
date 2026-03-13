@@ -1,0 +1,31 @@
+# Uso: docker compose -f docker-compose.yml -f docker-compose.dev.yml up
+services:
+
+  db:
+    ports:
+      - "5432:5432"
+
+  backend:
+    build:
+      context: ./backend
+    volumes:
+      - ./backend:/app
+    environment:
+      DJANGO_SETTINGS_MODULE: config.settings.development
+      DEBUG: "True"
+    command: python manage.py runserver 0.0.0.0:8000
+    ports:
+      - "8000:8000"
+
+  frontend:
+    build:
+      context: ./frontend
+      target: builder
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    command: npm run dev
+    ports:
+      - "3000:3000"
+    environment:
+      API_BASE: http://localhost:8000/api
