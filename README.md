@@ -6,9 +6,9 @@ Aplicación web para la gestión de socios y familias de una AMPA. Backend en Dj
 
 | Capa | Tecnología |
 |------|-----------|
-| Backend | Django 5 + Django REST Framework |
+| Backend | Django 6 + Django REST Framework |
 | Autenticación | django-allauth — MFA (TOTP), Google, GitHub |
-| Base de datos | PostgreSQL 16 |
+| Base de datos | PostgreSQL 17 |
 | Frontend | Nuxt 3 + Nuxt UI (Tailwind CSS) |
 | Estado | Pinia |
 | Servidor | Nginx + Gunicorn |
@@ -43,6 +43,10 @@ tarfia-socios/
 │   └── layouts/            # default (sidebar) + auth
 ├── nginx/
 │   └── nginx.conf          # HTTPS, proxy, headers de seguridad
+├── utils/
+│   ├── generate_env.py     # Genera .env con secretos aleatorios
+│   └── mdb_to_postgres.py  # Migración desde Access (.mdb)
+├── Makefile
 ├── docker-compose.yml      # Producción
 ├── docker-compose.dev.yml  # Override para desarrollo
 └── .env.example
@@ -51,30 +55,55 @@ tarfia-socios/
 ## Requisitos
 
 - Docker y Docker Compose
+- Python 3.11+ (solo para los scripts de `utils/`)
 - Un dominio con DNS apuntando al servidor
 - Certificado SSL (instrucciones abajo)
 
+---
+
 ## Puesta en marcha
 
-### 1. Clonar y configurar entorno
+### 1. Clonar el repositorio
 
 ```bash
 git clone https://github.com/fjjimenezrios/tarfia-socios.git
 cd tarfia-socios
-cp .env.example .env
 ```
 
-Editar `.env` con los valores reales:
+### 2. Inicializar el entorno
+
+```bash
+make init
+```
+
+Este comando:
+- Genera `.env` con `SECRET_KEY`, `DB_PASS` y todos los secretos de forma aleatoria
+- Construye las imágenes Docker
+- Arranca PostgreSQL y espera a que esté listo
+- Aplica las migraciones de Django
+
+> Para regenerar los secretos (⚠ borra los anteriores): `make init-force`
+
+### 3. Editar el .env generado
+
+El `.env` se crea con valores funcionales pero debes ajustar:
 
 ```env
-SECRET_KEY=genera-una-clave-con-openssl-rand-base64-50
-DB_PASS=contraseña-segura
-ALLOWED_HOSTS=tudominio.com
+ALLOWED_HOSTS=tudominio.com,www.tudominio.com
 CORS_ALLOWED_ORIGINS=https://tudominio.com
 API_BASE=https://tudominio.com/api
+DEFAULT_FROM_EMAIL=noreply@tudominio.com
+
+# Email SMTP
+EMAIL_HOST_USER=tu@gmail.com
+EMAIL_HOST_PASSWORD=contraseña-app
+
+# Social login (opcional)
+GOOGLE_CLIENT_ID=...
+GITHUB_CLIENT_ID=...
 ```
 
-### 2. Obtener certificado SSL (Let's Encrypt)
+### 4. Obtener certificado SSL (Let's Encrypt)
 
 ```bash
 sudo apt install certbot
@@ -83,31 +112,70 @@ sudo certbot certonly --standalone -d tudominio.com
 
 Ajustar el dominio en `nginx/nginx.conf`.
 
-### 3. Arrancar en producción
+### 5. Crear superusuario y arrancar
 
 ```bash
-docker compose up -d --build
+make superuser
+make up
 ```
 
-### 4. Crear superusuario
+El panel de administración estará en `https://tudominio.com/admin/`.
+
+---
+
+## Comandos disponibles (Makefile)
 
 ```bash
-docker compose exec backend python manage.py createsuperuser
+make help           # Lista todos los comandos
 ```
 
-El panel de administración estará disponible en `https://tudominio.com/admin/`.
+| Comando | Descripción |
+|---------|-------------|
+| `make init` | Primera instalación: genera .env, build, migra |
+| `make up` | Arranca todos los servicios |
+| `make down` | Para todos los servicios |
+| `make build` | Reconstruye imágenes sin caché |
+| `make logs` | Logs en tiempo real |
+| `make migrate` | Aplica migraciones de Django |
+| `make makemigrations` | Crea nuevas migraciones |
+| `make superuser` | Crea superusuario |
+| `make shell` | Shell interactivo de Django |
+| `make db-shell` | Consola psql |
+| `make db-dump` | Exporta backup de la BD |
+| `make db-restore FILE=...` | Restaura un dump |
+| `make dev` | Entorno de desarrollo con hot-reload |
+| `make test` | Ejecuta tests de Django |
+| `make import-mdb MDB=...` | Migra un .mdb a PostgreSQL |
+| `make clean` | ⚠ Elimina contenedores y volúmenes |
 
 ---
 
 ## Desarrollo local
 
 ```bash
-docker compose -f docker-compose.yml -f docker-compose.dev.yml up
+make dev
 ```
 
 - Frontend: `http://localhost:3000`
 - Backend API: `http://localhost:8000/api/`
 - Django admin: `http://localhost:8000/admin/`
+
+---
+
+## Migración desde Access (.mdb)
+
+Si tienes datos en un archivo Access (.mdb), puedes migrarlos a PostgreSQL:
+
+```bash
+# Requisito: mdbtools
+sudo apt install mdbtools    # Linux
+brew install mdbtools         # macOS
+
+# Migrar
+make import-mdb MDB=socios-tarfia.mdb
+```
+
+El script lee la conexión automáticamente desde el `.env` y crea un schema `mdb_import` en PostgreSQL con todas las tablas del .mdb. Desde ahí puedes revisar los datos y transformarlos al schema de Django con un script de migración propio.
 
 ---
 
