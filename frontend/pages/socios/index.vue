@@ -58,7 +58,7 @@ const estadoColors: Record<string, string> = {
 
 async function deleteSocio(id: number) {
   if (!confirm("¿Seguro que quieres dar de baja a este socio?")) return
-  await apiFetch(`/socios/${id}/`, { method: "DELETE" })
+  await apiFetch(`/hijos/${id}/`, { method: "DELETE" })
   toast.add({ title: "Socio eliminado", color: "green", icon: "i-heroicons-check-circle" })
   refresh()
 }

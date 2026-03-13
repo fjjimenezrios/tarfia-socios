@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Socio, NivelCurso
+from .models import Hijo, NivelCurso
 
 
 class NivelCursoSerializer(serializers.ModelSerializer):
@@ -8,24 +8,23 @@ class NivelCursoSerializer(serializers.ModelSerializer):
         fields = ["id", "nombre", "orden"]
 
 
-class SocioSerializer(serializers.ModelSerializer):
-    nombre_completo = serializers.CharField(read_only=True)
+class HijoSerializer(serializers.ModelSerializer):
     nivel_nombre = serializers.CharField(source="nivel.nombre", read_only=True)
     familia_apellidos = serializers.CharField(source="familia.apellidos", read_only=True)
+    club_name = serializers.CharField(source="familia.club.name", read_only=True)
 
     class Meta:
-        model = Socio
+        model = Hijo
         fields = "__all__"
 
 
-class SocioListSerializer(serializers.ModelSerializer):
-    """Serializer ligero para listados."""
+class HijoListSerializer(serializers.ModelSerializer):
     nivel_nombre = serializers.CharField(source="nivel.nombre", read_only=True)
     familia_apellidos = serializers.CharField(source="familia.apellidos", read_only=True)
 
     class Meta:
-        model = Socio
+        model = Hijo
         fields = [
             "id", "nombre", "apellidos", "nivel_nombre",
-            "familia_apellidos", "estado", "cuota_pagada", "fecha_alta",
+            "familia_apellidos", "estado", "fecha_alta",
         ]

@@ -11,7 +11,7 @@ const { data: stats, pending } = await useAsyncData("stats", () =>
     cuotas_pagadas: number
     cuotas_pendientes: number
     por_nivel: { nivel__nombre: string; total: number }[]
-  }>("/socios/estadisticas/")
+  }>("/hijos/estadisticas/")
 )
 
 const cards = computed(() => [

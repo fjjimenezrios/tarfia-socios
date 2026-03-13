@@ -10,8 +10,9 @@ urlpatterns = [
     # JWT token endpoints
     path("api/auth/token/", include("apps.accounts.urls")),
     # App APIs
-    path("api/socios/", include("apps.socios.urls")),
+    path("api/clubs/", include("apps.clubs.urls")),
     path("api/familias/", include("apps.familias.urls")),
+    path("api/hijos/", include("apps.hijos.urls")),
 ]
 
 if settings.DEBUG:

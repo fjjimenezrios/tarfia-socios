@@ -4,7 +4,8 @@ from .models import Familia
 
 @admin.register(Familia)
 class FamiliaAdmin(admin.ModelAdmin):
-    list_display = ["apellidos", "nombre_tutor1", "email", "telefono", "localidad", "activa"]
-    list_filter = ["activa", "localidad"]
+    list_display = ["apellidos", "nombre_tutor1", "club", "email", "telefono", "localidad", "activa", "cuota_pagada"]
+    list_filter = ["activa", "cuota_pagada", "club"]
     search_fields = ["apellidos", "nombre_tutor1", "email"]
-    ordering = ["apellidos"]
+    ordering = ["club", "apellidos"]
+    autocomplete_fields = ["club"]
