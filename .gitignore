@@ -44,6 +44,17 @@ assets/img/icon-512.png
 *.sql.bak
 backups/
 
+# Base de datos SQLite (datos locales)
+*.db
+*.sqlite
+*.sqlite3
+
+# Archivo MDB original (dato sensible, no versionar)
+*.mdb
+
+# Script de migración MDB→SQLite (opcional, solo para uso local)
+mdb_to_sqlite.py
+
 # Archivos grandes originales (logos AI, PSD, etc.)
 *.ai
 *.psd
